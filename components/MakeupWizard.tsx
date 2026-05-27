@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import AvatarBuilder from './AvatarBuilder'
 
 type FaceAnalysis = {
   faceShape: string
@@ -52,7 +53,8 @@ const LOOKS = [
 
 export default function MakeupWizard({ userId }: { userId?: string }) {
   const [currentStep, setCurrentStep] = useState(1)
-  const [inputMode, setInputMode] = useState<'upload' | 'manual'>('upload')
+  const [inputMode, setInputMode] = useState<'upload' | 'avatar'>('upload')
+  const [avatarData, setAvatarData] = useState<Partial<FaceAnalysis> | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>('')
   const [manualTraits, setManualTraits] = useState<Partial<FaceAnalysis>>({})
@@ -240,18 +242,18 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
             <p className="text-sm text-[#8B5E52] mb-6">Upload a selfie for AI analysis, or fill in your features manually.</p>
 
             <div className="flex bg-[#FFF0E8] rounded-xl p-1 mb-6 gap-1">
-              {(['upload', 'manual'] as const).map(mode => (
+              {(['upload', 'avatar'] as const).map(mode => (
                 <button key={mode}
                   onClick={() => setInputMode(mode)}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all capitalize
                     ${inputMode === mode ? 'bg-white shadow-sm text-[#F4845F]' : 'text-[#8B5E52] hover:text-[#1C0A00]'}`}>
-                  {mode === 'upload' ? '📷 Upload Selfie' : '✏️ Enter Manually'}
+                  {mode === 'upload' ? '📷 Upload Selfie' : '🎨 Build My Avatar'}
                 </button>
               ))}
             </div>
 
             {inputMode === 'upload' ? (
-              <div>
+              <>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -273,38 +275,25 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                     </>
                   )}
                 </div>
-              </div>
+                <button
+                  onClick={handleNextFromStep1}
+                  disabled={loading || !imageFile}
+                  className="mt-8 w-full bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold
+                             hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                  {loading ? 'Analyzing your face…' : 'Continue →'}
+                </button>
+              </>
             ) : (
-              <div className="grid grid-cols-2 gap-4">
-                {([
-                  ['faceShape', 'Face Shape', 'e.g. oval, round, square'],
-                  ['skinTone', 'Skin Tone', 'e.g. fair, medium, deep'],
-                  ['eyeShape', 'Eye Shape', 'e.g. almond, round, hooded'],
-                  ['eyeColor', 'Eye Color', 'e.g. brown, hazel, blue'],
-                  ['lipShape', 'Lip Shape', 'e.g. full, thin, bow-shaped'],
-                  ['undertone', 'Undertone', 'e.g. warm, cool, neutral'],
-                ] as [keyof FaceAnalysis, string, string][]).map(([key, label, placeholder]) => (
-                  <div key={key}>
-                    <label className="block text-xs font-medium text-[#8B5E52] mb-1">{label}</label>
-                    <input
-                      type="text"
-                      placeholder={placeholder}
-                      value={manualTraits[key] || ''}
-                      onChange={e => setManualTraits({ ...manualTraits, [key]: e.target.value })}
-                      className="w-full px-3 py-2 rounded-lg border border-[#FFD4BC] bg-white text-[#1C0A00] text-sm focus:outline-none focus:ring-2 focus:ring-[#F4845F] placeholder:text-[#8B5E52]/40"
-                    />
-                  </div>
-                ))}
-              </div>
+              <AvatarBuilder
+                onChange={(data) => setAvatarData(data)}
+                onContinue={() => {
+                  if (avatarData) {
+                    setFaceAnalysis(avatarData as FaceAnalysis)
+                    setCurrentStep(2)
+                  }
+                }}
+              />
             )}
-
-            <button
-              onClick={handleNextFromStep1}
-              disabled={loading || (inputMode === 'upload' && !imageFile)}
-              className="mt-8 w-full bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold
-                         hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
-              {loading ? 'Analyzing your face…' : 'Continue →'}
-            </button>
           </div>
         )}
 
