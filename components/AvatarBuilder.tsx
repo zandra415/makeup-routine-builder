@@ -1,8 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-// @ts-ignore — avataaars peer dep targets React 17, works fine on React 19
-import Avatar from 'avataaars'
 
 type FaceAnalysis = {
   faceShape: string
@@ -19,112 +17,83 @@ type Props = {
   onContinue: () => void
 }
 
-// ─── Option lists ────────────────────────────────────────────────────────────
+// ─── Option lists ─────────────────────────────────────────────────────────────
 
-const TOP_TYPES = [
-  { value: 'LongHairStraight',    label: 'Straight' },
-  { value: 'LongHairWavy',        label: 'Wavy' },
-  { value: 'LongHairBun',         label: 'Bun' },
-  { value: 'ShortHairShortCurly', label: 'Short Curly' },
-  { value: 'LongHairBob',         label: 'Bob' },
-  { value: 'LongHairCurly',       label: 'Curly' },
+const SKIN_TONES = [
+  { value: 'f2d3b1', label: 'Fair',   color: '#F2D3B1' },
+  { value: 'ecad80', label: 'Light',  color: '#ECAD80' },
+  { value: 'b16a45', label: 'Tan',    color: '#B16A45' },
+  { value: '92594b', label: 'Brown',  color: '#92594B' },
+  { value: '4a312c', label: 'Dark',   color: '#4A312C' },
+]
+
+const HAIR_STYLES = [
+  { value: 'long01', label: 'Straight' },
+  { value: 'long02', label: 'Wavy' },
+  { value: 'long03', label: 'Curly' },
+  { value: 'short01', label: 'Short' },
+  { value: 'short02', label: 'Textured' },
+  { value: 'bun', label: 'Bun' },
 ]
 
 const HAIR_COLORS = [
-  { value: 'Black',      label: 'Black',       color: '#2C1B18' },
-  { value: 'Brown',      label: 'Brown',        color: '#724133' },
-  { value: 'Blonde',     label: 'Blonde',       color: '#F5C518' },
-  { value: 'Auburn',     label: 'Auburn',       color: '#A55728' },
-  { value: 'Red',        label: 'Red',          color: '#C93305' },
-  { value: 'PastelPink', label: 'Pastel Pink',  color: '#F59797' },
-  { value: 'Blue01',     label: 'Blue',         color: '#65C9FF' },
-  { value: 'SilverGray', label: 'Silver',       color: '#AFAFAF' },
+  { value: '0e0e0e', label: 'Black',  color: '#0E0E0E' },
+  { value: '6a4e35', label: 'Brown',  color: '#6A4E35' },
+  { value: 'f4d150', label: 'Blonde', color: '#F4D150' },
+  { value: 'f59797', label: 'Pink',   color: '#F59797' },
+  { value: '3eac2c', label: 'Green',  color: '#3EAC2C' },
+  { value: 'e8e1ef', label: 'Silver', color: '#E8E1EF' },
 ]
 
 const EYE_TYPES = [
-  { value: 'Default',   label: 'Default' },
-  { value: 'Happy',     label: 'Happy' },
-  { value: 'Surprised', label: 'Surprised' },
-  { value: 'Wink',      label: 'Wink' },
-  { value: 'Squint',    label: 'Squint' },
-  { value: 'Dizzy',     label: 'Dreamy' },
-]
-
-const EYEBROW_TYPES = [
-  { value: 'Default',       label: 'Default' },
-  { value: 'RaisedExcited', label: 'Raised' },
-  { value: 'SadConcerned',  label: 'Worried' },
-  { value: 'UpDown',        label: 'Arched' },
-  { value: 'Angry',         label: 'Bold' },
-  { value: 'FlatNatural',   label: 'Natural' },
+  { value: 'variant01', label: 'Soft' },
+  { value: 'variant02', label: 'Bright' },
+  { value: 'variant03', label: 'Cat' },
+  { value: 'variant04', label: 'Round' },
+  { value: 'variant05', label: 'Doe' },
+  { value: 'variant06', label: 'Bold' },
 ]
 
 const MOUTH_TYPES = [
-  { value: 'Default',  label: 'Neutral' },
-  { value: 'Smile',    label: 'Smile' },
-  { value: 'Serious',  label: 'Serious' },
-  { value: 'Twinkle',  label: 'Playful' },
-  { value: 'Tongue',   label: 'Fun' },
-  { value: 'Sad',      label: 'Pouty' },
+  { value: 'variant01', label: 'Smile' },
+  { value: 'variant02', label: 'Neutral' },
+  { value: 'variant03', label: 'Grin' },
+  { value: 'variant04', label: 'Pout' },
 ]
 
-const SKIN_COLORS = [
-  { value: 'Light',     label: 'Light',      color: '#FDDBB4' },
-  { value: 'Yellow',    label: 'Yellow',      color: '#F5C28A' },
-  { value: 'Tanned',    label: 'Tanned',      color: '#D08B5B' },
-  { value: 'Brown',     label: 'Brown',        color: '#AE5D29' },
-  { value: 'DarkBrown', label: 'Dark Brown',  color: '#614335' },
-  { value: 'Black',     label: 'Black',        color: '#3C1F0E' },
-]
-
-const ACCESSORIES = [
-  { value: 'Blank',          label: 'None' },
-  { value: 'Kurt',           label: 'Round Frames' },
-  { value: 'Prescription01', label: 'Glasses' },
-  { value: 'Prescription02', label: 'Square Glasses' },
-  { value: 'Round',          label: 'Circle Frames' },
-  { value: 'Sunglasses',     label: 'Sunglasses' },
-  { value: 'Wayfarers',      label: 'Wayfarers' },
-]
-
-// ─── faceAnalysis mappings ────────────────────────────────────────────────────
+// ─── FaceAnalysis mappings ────────────────────────────────────────────────────
 
 const SKIN_TO_TONE: Record<string, string> = {
-  Light:     'fair light',
-  Yellow:    'light yellow',
-  Tanned:    'tanned',
-  Brown:     'medium brown',
-  DarkBrown: 'dark brown',
-  Black:     'deep',
-}
-
-const EYE_TO_SHAPE: Record<string, string> = {
-  Default:   'almond',
-  Happy:     'upturned',
-  Surprised: 'round',
-  Wink:      'almond',
-  Squint:    'hooded',
-  Dizzy:     'round',
-}
-
-const MOUTH_TO_LIP: Record<string, string> = {
-  Default: 'natural',
-  Smile:   'full',
-  Serious: 'thin',
-  Twinkle: 'bow-shaped',
-  Tongue:  'wide',
-  Sad:     'downturned',
+  'f2d3b1': 'fair',
+  'ecad80': 'light',
+  'b16a45': 'tan',
+  '92594b': 'medium brown',
+  '4a312c': 'dark',
 }
 
 const HAIR_TO_UNDERTONE: Record<string, string> = {
-  Black:      'neutral',
-  Brown:      'warm',
-  Blonde:     'warm',
-  Auburn:     'warm',
-  Red:        'warm',
-  PastelPink: 'cool',
-  Blue01:     'cool',
-  SilverGray: 'cool',
+  '0e0e0e': 'neutral',
+  '6a4e35': 'warm',
+  'f4d150': 'warm',
+  'f59797': 'cool',
+  '3eac2c': 'cool',
+  'e8e1ef': 'cool',
+}
+
+const EYE_TO_SHAPE: Record<string, string> = {
+  variant01: 'almond',
+  variant02: 'bright',
+  variant03: 'cat',
+  variant04: 'round',
+  variant05: 'doe',
+  variant06: 'hooded',
+}
+
+const MOUTH_TO_LIP: Record<string, string> = {
+  variant01: 'full',
+  variant02: 'natural',
+  variant03: 'wide',
+  variant04: 'downturned',
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -172,13 +141,11 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export default function AvatarBuilder({ onChange, onContinue }: Props) {
   const [sel, setSel] = useState({
-    topType:         'LongHairWavy',
-    hairColor:       'Brown',
-    eyeType:         'Default',
-    eyebrowType:     'Default',
-    mouthType:       'Smile',
-    skinColor:       '',
-    accessoriesType: 'Blank',
+    skinColor:  '',
+    hair:       'long02',
+    hairColor:  '6a4e35',
+    eyes:       'variant01',
+    mouth:      'variant01',
   })
 
   const pick = (key: keyof typeof sel, val: string) => {
@@ -187,13 +154,19 @@ export default function AvatarBuilder({ onChange, onContinue }: Props) {
     onChange({
       faceShape:    'oval',
       skinTone:     SKIN_TO_TONE[next.skinColor]    ?? '',
-      eyeShape:     EYE_TO_SHAPE[next.eyeType]      ?? 'almond',
+      eyeShape:     EYE_TO_SHAPE[next.eyes]         ?? 'almond',
       eyeColor:     'brown',
-      lipShape:     MOUTH_TO_LIP[next.mouthType]    ?? 'natural',
+      lipShape:     MOUTH_TO_LIP[next.mouth]        ?? 'natural',
       undertone:    HAIR_TO_UNDERTONE[next.hairColor] ?? 'neutral',
       skinConcerns: '',
     })
   }
+
+  const seed = `${sel.skinColor}-${sel.hair}-${sel.hairColor}-${sel.eyes}-${sel.mouth}`
+
+  const avatarUrl = sel.skinColor
+    ? `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(seed)}&backgroundColor=ffecd2&skinColor=${sel.skinColor}&hair=${sel.hair}&hairColor=${sel.hairColor}&eyes=${sel.eyes}&mouth=${sel.mouth}`
+    : `https://api.dicebear.com/7.x/adventurer/svg?seed=zanzan-default&backgroundColor=ffecd2&hair=${sel.hair}&hairColor=${sel.hairColor}&eyes=${sel.eyes}&mouth=${sel.mouth}`
 
   const canContinue = !!sel.skinColor
 
@@ -203,30 +176,34 @@ export default function AvatarBuilder({ onChange, onContinue }: Props) {
 
       {/* Avatar preview */}
       <div
-        className="bg-[#FFF0E8] rounded-full shadow-sm flex items-center justify-center"
+        className="bg-[#FFF0E8] rounded-full shadow-sm flex items-center justify-center overflow-hidden"
         style={{ width: 270, height: 270 }}
       >
-        <Avatar
-          style={{ width: '250px', height: '250px' }}
-          avatarStyle="Circle"
-          topType={sel.topType}
-          hairColor={sel.hairColor}
-          facialHairType="Blank"
-          clotheType="BlazerShirt"
-          eyeType={sel.eyeType}
-          eyebrowType={sel.eyebrowType}
-          mouthType={sel.mouthType}
-          skinColor={sel.skinColor || 'Light'}
-          accessoriesType={sel.accessoriesType}
+        <img
+          src={avatarUrl}
+          alt="Your avatar"
+          width={250}
+          height={250}
+          style={{ borderRadius: '50%' }}
         />
       </div>
+
+      {!canContinue && (
+        <p className="text-xs text-[#8B5E52] -mt-2">Pick a skin tone to see your avatar</p>
+      )}
 
       {/* Customization rows */}
       <div className="w-full space-y-4">
 
+        <Row label="Skin Tone">
+          {SKIN_TONES.map(s => (
+            <Swatch key={s.value} color={s.color} label={s.label} selected={sel.skinColor === s.value} onClick={() => pick('skinColor', s.value)} />
+          ))}
+        </Row>
+
         <Row label="Hair Style">
-          {TOP_TYPES.map(t => (
-            <Pill key={t.value} label={t.label} selected={sel.topType === t.value} onClick={() => pick('topType', t.value)} />
+          {HAIR_STYLES.map(h => (
+            <Pill key={h.value} label={h.label} selected={sel.hair === h.value} onClick={() => pick('hair', h.value)} />
           ))}
         </Row>
 
@@ -237,32 +214,14 @@ export default function AvatarBuilder({ onChange, onContinue }: Props) {
         </Row>
 
         <Row label="Eyes">
-          {EYE_TYPES.map(t => (
-            <Pill key={t.value} label={t.label} selected={sel.eyeType === t.value} onClick={() => pick('eyeType', t.value)} />
-          ))}
-        </Row>
-
-        <Row label="Eyebrows">
-          {EYEBROW_TYPES.map(t => (
-            <Pill key={t.value} label={t.label} selected={sel.eyebrowType === t.value} onClick={() => pick('eyebrowType', t.value)} />
+          {EYE_TYPES.map(e => (
+            <Pill key={e.value} label={e.label} selected={sel.eyes === e.value} onClick={() => pick('eyes', e.value)} />
           ))}
         </Row>
 
         <Row label="Mouth">
-          {MOUTH_TYPES.map(t => (
-            <Pill key={t.value} label={t.label} selected={sel.mouthType === t.value} onClick={() => pick('mouthType', t.value)} />
-          ))}
-        </Row>
-
-        <Row label="Skin Tone">
-          {SKIN_COLORS.map(c => (
-            <Swatch key={c.value} color={c.color} label={c.label} selected={sel.skinColor === c.value} onClick={() => pick('skinColor', c.value)} />
-          ))}
-        </Row>
-
-        <Row label="Accessories">
-          {ACCESSORIES.map(a => (
-            <Pill key={a.value} label={a.label} selected={sel.accessoriesType === a.value} onClick={() => pick('accessoriesType', a.value)} />
+          {MOUTH_TYPES.map(m => (
+            <Pill key={m.value} label={m.label} selected={sel.mouth === m.value} onClick={() => pick('mouth', m.value)} />
           ))}
         </Row>
 
