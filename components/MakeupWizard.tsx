@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import AvatarBuilder from './AvatarBuilder'
+import { supabase } from '@/lib/supabase'
 
 type FaceAnalysis = {
   faceShape: string
@@ -64,6 +65,9 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const [routine, setRoutine] = useState<Routine | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [saveEmail, setSaveEmail] = useState('')
+  const [savingEmail, setSavingEmail] = useState(false)
+  const [emailSaved, setEmailSaved] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -146,6 +150,38 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
     }
     setError('')
     handleGenerate()
+  }
+
+  const handleEmailSave = async () => {
+    if (!saveEmail || !saveEmail.includes('@')) return
+    setSavingEmail(true)
+    try {
+      await supabase.auth.signInWithOtp({
+        email: saveEmail,
+        options: {
+          emailRedirectTo: window.location.origin + '/glam-lab',
+          data: { source: 'routine_save' }
+        }
+      })
+      if (userId) {
+        await fetch('/api/save-routine', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            routine,
+            products,
+            desiredLook,
+            faceAnalysis
+          })
+        })
+      }
+      setEmailSaved(true)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSavingEmail(false)
+    }
   }
 
   const handleGenerate = async () => {
@@ -443,6 +479,37 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                 <p className="text-[#8B5E52] text-sm leading-relaxed">{routine.finishingNotes}</p>
               </div>
             )}
+
+            <div className="mt-8 p-6 rounded-3xl bg-[#FFF0E8] border border-[#FFD4BC] text-center">
+              <p className="text-xs tracking-widest uppercase text-[#F4845F] mb-2" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Save Your Look ✦</p>
+              <h3 className="text-xl text-[#1C0A00] mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>Love this routine?</h3>
+              <p className="text-sm text-[#8B5E52] mb-6 leading-relaxed">Drop your email and we'll save your routine, send it to you, and create your free account. No password needed ever.</p>
+              {!emailSaved ? (
+                <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={saveEmail}
+                    onChange={(e) => setSaveEmail(e.target.value)}
+                    className="flex-1 px-4 py-3 rounded-full border border-[#FFD4BC] bg-white text-sm text-[#1C0A00] outline-none focus:border-[#F4845F] focus:ring-2 focus:ring-[#FFAA80]/30 placeholder-[#C4977E]"
+                  />
+                  <button
+                    onClick={handleEmailSave}
+                    disabled={savingEmail}
+                    className="px-6 py-3 rounded-full bg-[#F4845F] text-white text-sm font-medium hover:bg-[#FFAA80] transition-all duration-200 disabled:opacity-50"
+                    style={{ fontFamily: 'var(--font-josefin)' }}
+                  >
+                    {savingEmail ? 'Saving...' : 'Save My Look →'}
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p className="text-2xl mb-2">✨</p>
+                  <p className="text-[#F4845F] font-medium text-sm">Routine saved! Check your email.</p>
+                  <p className="text-[#8B5E52] text-xs mt-1">Your free ZanZan account is ready.</p>
+                </div>
+              )}
+            </div>
 
             <button
               onClick={() => {

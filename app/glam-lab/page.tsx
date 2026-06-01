@@ -54,13 +54,15 @@ export default function GlamLabPage() {
         <Link href="/glam-lab">
           <Image src="/zanzan-logo.svg" alt="ZanZan" width={80} height={32} className="h-16 w-auto" />
         </Link>
-        <Link
-          href="/auth"
-          className="px-5 py-2 text-sm rounded-full bg-[#F4845F] text-white hover:bg-[#FFAA80] transition-colors duration-200"
-          style={{ fontFamily: 'var(--font-josefin)' }}
-        >
-          {userId ? 'My Account' : 'Sign In'}
-        </Link>
+        {userId && (
+          <Link
+            href="/account"
+            className="text-xs tracking-widest uppercase text-[#8B5E52] hover:text-[#F4845F] transition-colors"
+            style={{ fontFamily: 'var(--font-josefin)' }}
+          >
+            My Account
+          </Link>
+        )}
       </nav>
 
       {/* HERO HEADER */}
