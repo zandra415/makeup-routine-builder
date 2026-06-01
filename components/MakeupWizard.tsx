@@ -236,7 +236,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
       await supabase.auth.signInWithOtp({
         email: saveEmail,
         options: {
-          emailRedirectTo: window.location.origin + '/glam-lab',
+          emailRedirectTo: window.location.origin + '/account',
           data: { source: 'routine_save' }
         }
       })
