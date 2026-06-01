@@ -34,11 +34,21 @@ const LOOK_OF_THE_WEEK = {
   heat: 99
 }
 
+const FEATURED_PRODUCTS = [
+  { name: 'Rare Beauty Soft Pinch Tinted Lip Oil', brand: 'Rare Beauty', price: '$20', category: 'Lips', tag: 'Viral Pick', color: '#FFE8D6' },
+  { name: 'Charlotte Tilbury Flawless Filter', brand: 'Charlotte Tilbury', price: '$49', category: 'Base', tag: 'Editor Fave', color: '#FFF0E8' },
+  { name: 'NARS Blush in Orgasm', brand: 'NARS', price: '$32', category: 'Blush', tag: 'Classic', color: '#FFD4BC' },
+  { name: 'e.l.f. Halo Glow Liquid Filter', brand: 'e.l.f. Cosmetics', price: '$14', category: 'Base', tag: 'Dupe Alert', color: '#FFF5EE' },
+  { name: 'Laneige Lip Sleeping Mask', brand: 'Laneige', price: '$24', category: 'Lips', tag: 'TikTok Fave', color: '#FFE8D6' },
+  { name: 'Colourpop Super Shock Cheek', brand: 'Colourpop', price: '$9', category: 'Blush', tag: 'Budget Gem', color: '#FFF0E8' },
+]
+
 export default function TrendingPage() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [hoveredRank, setHoveredRank] = useState<number | null>(null)
   const [updatedAt, setUpdatedAt] = useState('')
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [activeProduct, setActiveProduct] = useState(0)
 
   useEffect(() => {
     setUpdatedAt(new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }))
@@ -68,6 +78,13 @@ export default function TrendingPage() {
     }, 1000)
 
     return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveProduct(prev => (prev + 1) % FEATURED_PRODUCTS.length)
+    }, 3000)
+    return () => clearInterval(interval)
   }, [])
 
   const filtered = activeCategory === 'All'
@@ -205,6 +222,85 @@ export default function TrendingPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* SHOP THE MOMENT */}
+      <div className="max-w-4xl mx-auto px-4 mb-10">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-xs text-[#F4845F] tracking-[0.3em] uppercase mb-1" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Products We Love</p>
+            <h2 className="text-2xl text-[#1C0A00]" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Shop the Moment</h2>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveProduct(prev => (prev - 1 + FEATURED_PRODUCTS.length) % FEATURED_PRODUCTS.length)}
+              className="w-8 h-8 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all"
+            >←</button>
+            <button
+              onClick={() => setActiveProduct(prev => (prev + 1) % FEATURED_PRODUCTS.length)}
+              className="w-8 h-8 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all"
+            >→</button>
+          </div>
+        </div>
+
+        <div className="flex gap-4 overflow-hidden">
+          {FEATURED_PRODUCTS.map((product, i) => {
+            const position = (i - activeProduct + FEATURED_PRODUCTS.length) % FEATURED_PRODUCTS.length
+            const isActive = position === 0
+            const isVisible = isActive || position === 1 || position === 2
+
+            if (!isVisible) return null
+
+            return (
+              <div
+                key={product.name}
+                className={`flex-shrink-0 rounded-3xl p-6 transition-all duration-500 ${
+                  isActive ? 'w-64 opacity-100' : 'w-52 opacity-50'
+                }`}
+                style={{ background: product.color }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] px-3 py-1 rounded-full bg-white/60 text-[#8B5E52] tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)' }}>
+                    {product.tag}
+                  </span>
+                  <span className="text-[10px] text-[#C4977E]" style={{ fontFamily: 'var(--font-josefin)' }}>{product.category}</span>
+                </div>
+
+                <div className="w-full h-28 rounded-2xl bg-white/40 flex items-center justify-center mb-4">
+                  <span className="text-4xl">
+                    {product.category === 'Lips' ? '💋' : product.category === 'Blush' ? '🌸' : '✨'}
+                  </span>
+                </div>
+
+                <p className="text-xs text-[#8B5E52] mb-1" style={{ fontFamily: 'var(--font-josefin)' }}>{product.brand}</p>
+                <p className="text-sm font-medium text-[#1C0A00] mb-1 leading-snug" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>{product.name}</p>
+                <p className="text-sm font-bold text-[#F4845F] mb-4">{product.price}</p>
+
+                <a
+                  href={`https://www.sephora.com/search?keyword=${encodeURIComponent(product.name)}&utm_source=zanzan&utm_medium=affiliate`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center py-2 rounded-full bg-[#F4845F] text-white text-[10px] tracking-widest uppercase hover:bg-[#FFAA80] transition-all"
+                  style={{ fontFamily: 'var(--font-josefin)' }}
+                >
+                  Shop Now →
+                </a>
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="flex justify-center gap-2 mt-4">
+          {FEATURED_PRODUCTS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveProduct(i)}
+              className={`transition-all duration-300 rounded-full ${
+                i === activeProduct ? 'w-6 h-2 bg-[#F4845F]' : 'w-2 h-2 bg-[#FFD4BC]'
+              }`}
+            />
+          ))}
         </div>
       </div>
 
