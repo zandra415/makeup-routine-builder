@@ -110,7 +110,7 @@ export default function LandingPage() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
-                  className={`text-base font-medium whitespace-nowrap pb-0.5 transition-all ${
+                  className={`text-xs font-medium whitespace-nowrap pb-0.5 transition-all ${
                     activeTab === link.name
                       ? 'text-[#F4845F] border-b-2 border-[#F4845F]'
                       : 'text-[#8B5E52] hover:text-[#F4845F]'
@@ -216,8 +216,11 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Gradient fade into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#FFFAF5] z-10 pointer-events-none" />
+
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 flex flex-col items-center gap-1">
+        <div className="absolute bottom-8 flex flex-col items-center gap-1 z-20">
           <a href="#features" className="flex flex-col items-center gap-1 group">
             <span className="text-xs text-white/60 group-hover:text-white transition-colors">scroll to explore</span>
             <span className="text-white text-lg animate-bounce">↓</span>
@@ -227,7 +230,7 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FEATURES ===== */}
-      <section id="features" className="bg-white py-24 px-4">
+      <section id="features" className="bg-[#FFFAF5] pt-16 pb-24 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="fade-up text-center mb-14">
             <h2
