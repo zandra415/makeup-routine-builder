@@ -99,18 +99,18 @@ export default function LandingPage() {
       `}</style>
 
       {/* ===== NAVBAR ===== */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-[#FFD4BC] px-6 py-3">
+      <nav className="sticky top-0 z-50 bg-[#FFFAF5]/90 backdrop-blur-sm border-b border-[#FFD4BC] px-8 py-5">
         <div className="relative flex items-center justify-between">
 
           {/* Left: desktop nav links / mobile hamburger */}
           <div className="flex items-center">
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-10">
               {NAV_LINKS.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
-                  className={`text-sm font-medium whitespace-nowrap pb-0.5 transition-all ${
+                  className={`text-base font-medium whitespace-nowrap pb-0.5 transition-all ${
                     activeTab === link.name
                       ? 'text-[#F4845F] border-b-2 border-[#F4845F]'
                       : 'text-[#8B5E52] hover:text-[#F4845F]'
@@ -130,19 +130,20 @@ export default function LandingPage() {
           </div>
 
           {/* Center: logo — absolutely centered */}
-          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none text-center">
             <span
-              className="text-2xl text-[#F4845F] italic font-bold"
+              className="text-5xl font-black italic text-[#F4845F] leading-none"
               style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
             >
               ZanZan
             </span>
+            <p className="text-xs text-[#FFAA80] tracking-widest mt-0.5">✦ serve your look ✦</p>
           </div>
 
           {/* Right: CTA button */}
           <Link
             href="/app"
-            className="btn-pulse bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white rounded-full px-5 py-2 text-sm font-medium hover:scale-105 transition-all"
+            className="btn-pulse bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:scale-105 transition-all"
           >
             Build My Look →
           </Link>
@@ -186,18 +187,9 @@ export default function LandingPage() {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center">
 
-          {/* Label */}
-          <p
-            className="text-xs font-semibold text-[#FFAA80] tracking-widest uppercase mb-6"
-            style={{ animation: 'heroIn 0.8s ease 0.3s both' }}
-          >
-            ✦ serve your look ✦
-          </p>
-
           {/* Headline */}
           <h1
-            className="hero-2 text-5xl md:text-7xl font-bold text-white leading-tight max-w-3xl mb-8"
-            style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
+            className="hero-2 font-serif italic font-bold text-white text-5xl md:text-7xl leading-tight max-w-3xl mb-8"
           >
             Stop guessing.<br />Start serving.
           </h1>
@@ -208,16 +200,16 @@ export default function LandingPage() {
           </p>
 
           {/* CTA buttons */}
-          <div className="hero-4 flex flex-col sm:flex-row gap-4">
+          <div className="hero-4 flex flex-row gap-3">
             <Link
               href="/app"
-              className="px-8 py-4 rounded-2xl bg-[#F4845F] text-white font-semibold text-base hover:opacity-90 transition-all shadow-md"
+              className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white text-xs font-medium px-5 py-2 rounded-full hover:scale-105 transition-all shadow-sm"
             >
-              Build My Routine
+              Build My Look →
             </Link>
             <a
               href="#features"
-              className="px-8 py-4 rounded-2xl border-2 border-white/40 text-white font-semibold text-base hover:bg-white/10 transition-all"
+              className="border border-white text-white text-xs font-medium px-5 py-2 rounded-full hover:bg-white hover:text-[#F4845F] transition-all"
             >
               See How It Works
             </a>
