@@ -11,50 +11,38 @@ const NAV_LINKS = [
   { name: 'Account',   href: '/account' },
 ]
 
+const STEPS = [
+  { num: '01', icon: '🤳', title: 'Upload Your Face', desc: 'Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.' },
+  { num: '02', icon: '💄', title: 'Add Your Products', desc: 'Tell us what\'s in your makeup bag. Any brand, any shade — we work with what you already own.' },
+  { num: '03', icon: '✨', title: 'Get Your Routine', desc: 'Pick a look and receive a personalized step-by-step routine built just for your face.' },
+]
+
 const FEATURES = [
-  {
-    icon: '📸',
-    title: 'Face Analysis',
-    desc: 'Upload a selfie or choose your features manually for a personalized read.',
-  },
-  {
-    icon: '💄',
-    title: 'Your Products',
-    desc: 'Enter the makeup you already own — no shopping list required.',
-  },
-  {
-    icon: '✨',
-    title: 'Choose Your Look',
-    desc: 'Pick from trending Gen Z styles curated for every mood and vibe.',
-  },
-  {
-    icon: '🎯',
-    title: 'AI Routine',
-    desc: 'Get step-by-step personalized instructions built just for your face.',
-  },
+  { icon: '🤳', title: 'Face Analysis', desc: 'Upload a selfie or build your avatar for a full personalized facial read.' },
+  { icon: '🛍️', title: 'Your Products Only', desc: 'No shopping list required. We work with exactly what\'s already in your collection.' },
+  { icon: '🎨', title: 'Trending Looks', desc: 'Choose from Gen Z styles curated for every mood, vibe, and occasion.' },
+  { icon: '🎯', title: 'Personalized Steps', desc: 'Step-by-step instructions tailored specifically to your face shape and features.' },
 ]
 
-const LOOKS = [
-  'Clean Girl', 'Soft Glam', 'Brat Summer', 'Dark Feminine',
-  'Latte Makeup', 'Blush Everything', 'Mob Wife Glam', 'Coquette',
-  'Strawberry Makeup', 'Old Money Glam', 'E-Girl Edge', 'Siren Eye',
-]
-
-const DELAY_CLASSES = ['delay-1', 'delay-2', 'delay-3', 'delay-4']
-
+const LOOKS_ROW1 = ['Clean Girl', 'Soft Glam', 'Brat Summer', 'Dark Feminine', 'Latte Makeup', 'Blush Everything', 'Mob Wife Glam', 'Coquette']
+const LOOKS_ROW2 = ['Strawberry Makeup', 'Old Money Glam', 'E-Girl Edge', 'Siren Eye', 'Glazed Skin', 'Vanilla Girl', 'Balletcore', 'Indie Sleaze']
+const TICKER = ['✦ 100% Free During Beta', '✦ No Account Needed', '✦ Takes 2 Minutes', '✦ Built For Real People']
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('Home')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible')
-        })
-      },
-      { threshold: 0.12 }
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible') }),
+      { threshold: 0.1 }
     )
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el))
     return () => observer.disconnect()
@@ -63,46 +51,69 @@ export default function LandingPage() {
   return (
     <>
       <style>{`
-        html { scroll-behavior: smooth; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
         .fade-up {
           opacity: 0;
           transform: translateY(32px);
-          transition: opacity 0.65s ease, transform 0.65s ease;
+          transition: opacity 0.7s ease, transform 0.7s ease;
         }
-        .fade-up.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .delay-1 { transition-delay: 0.10s; }
-        .delay-2 { transition-delay: 0.20s; }
-        .delay-3 { transition-delay: 0.30s; }
-        .delay-4 { transition-delay: 0.40s; }
+        .fade-up.is-visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.30s; }
+        .delay-3 { transition-delay: 0.45s; }
 
         @keyframes heroIn {
-          from { opacity: 0; transform: translateY(24px); }
+          from { opacity: 0; transform: translateY(28px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .hero-1 { animation: heroIn 0.8s ease 0.0s both; }
-        .hero-2 { animation: heroIn 0.8s ease 0.2s both; }
-        .hero-3 { animation: heroIn 0.8s ease 0.4s both; }
-        .hero-4 { animation: heroIn 0.8s ease 0.6s both; }
+        .hero-1 { animation: heroIn 0.9s ease 0.2s both; }
+        .hero-2 { animation: heroIn 0.9s ease 0.45s both; }
+        .hero-3 { animation: heroIn 0.9s ease 0.65s both; }
+        .hero-4 { animation: heroIn 0.9s ease 0.85s both; }
+
+        @keyframes drawLine {
+          from { width: 0; opacity: 0; }
+          to   { width: 80px; opacity: 1; }
+        }
+        .headline-line { animation: drawLine 1.5s ease 1s both; }
 
         @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(244, 132, 95, 0.45); }
-          50%       { box-shadow: 0 0 0 8px rgba(244, 132, 95, 0); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(244,132,95,0.45); }
+          50%       { box-shadow: 0 0 0 8px rgba(244,132,95,0); }
         }
         .btn-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
 
+        @keyframes scroll-left {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        @keyframes scroll-right {
+          from { transform: translateX(-50%); }
+          to   { transform: translateX(0); }
+        }
+        .row-left  { animation: scroll-left  28s linear infinite; }
+        .row-right { animation: scroll-right 28s linear infinite; }
+
+        @keyframes ticker {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        .ticker-track { animation: ticker 18s linear infinite; }
+
+        section[id] { scroll-margin-top: 80px; }
       `}</style>
 
       {/* ===== NAVBAR ===== */}
-      <nav className="sticky top-0 z-50 bg-[#FFFAF5]/90 backdrop-blur-sm border-b border-[#FFD4BC] px-8 py-5">
+      <nav className={`fixed top-0 left-0 right-0 z-50 px-8 py-4 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/90 backdrop-blur-sm border-b border-[#FFD4BC]'
+          : 'bg-transparent'
+      }`}>
         <div className="relative flex items-center justify-between">
 
-          {/* Left: desktop nav links / mobile hamburger */}
+          {/* Left: desktop nav links */}
           <div className="flex items-center">
             <div className="hidden md:flex items-center gap-10">
               {NAV_LINKS.map(link => (
@@ -110,18 +121,19 @@ export default function LandingPage() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
-                  className={`text-xs font-medium whitespace-nowrap pb-0.5 transition-all ${
+                  className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-widest uppercase transition-all ${
                     activeTab === link.name
-                      ? 'text-[#F4845F] border-b-2 border-[#F4845F]'
-                      : 'text-[#8B5E52] hover:text-[#F4845F]'
+                      ? scrolled ? 'text-[#F4845F] border-b-2 border-[#F4845F]' : 'text-white border-b-2 border-white'
+                      : scrolled ? 'text-[#8B5E52] hover:text-[#F4845F]' : 'text-white/80 hover:text-white'
                   }`}
+                  style={{ fontFamily: 'var(--font-josefin)' }}
                 >
                   {link.name}
                 </Link>
               ))}
             </div>
             <button
-              className="md:hidden text-2xl text-[#F4845F] leading-none"
+              className={`md:hidden text-2xl leading-none ${scrolled ? 'text-[#F4845F]' : 'text-white'}`}
               onClick={() => setMenuOpen(o => !o)}
               aria-label="Menu"
             >
@@ -129,21 +141,19 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Center: logo — absolutely centered */}
-          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none text-center">
-            <span
-              className="text-5xl font-black italic text-[#F4845F] leading-none"
-              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
-            >
-              ZanZan
-            </span>
-            <p className="text-xs text-[#FFAA80] tracking-widest mt-0.5">✦ serve your look ✦</p>
+          {/* Center: logo */}
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+            <img src="/zanzan-logo.svg" alt="ZanZan" className="h-16 w-auto opacity-100" />
           </div>
 
-          {/* Right: CTA button */}
+          {/* Right: CTA */}
           <Link
             href="/app"
-            className="btn-pulse bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:scale-105 transition-all"
+            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:scale-105 ${
+              scrolled
+                ? 'btn-pulse bg-[#F4845F] text-white shadow-sm'
+                : 'border border-white text-white hover:bg-white hover:text-[#F4845F]'
+            }`}
           >
             Build My Look →
           </Link>
@@ -151,15 +161,18 @@ export default function LandingPage() {
 
         {/* Mobile dropdown */}
         {menuOpen && (
-          <div className="md:hidden mt-3 pb-3 border-t border-[#FFD4BC] flex flex-col gap-4 pt-4">
+          <div className={`md:hidden mt-3 pb-4 border-t flex flex-col gap-4 pt-4 ${scrolled ? 'border-[#FFD4BC]' : 'border-white/20'}`}>
             {NAV_LINKS.map(link => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => { setActiveTab(link.name); setMenuOpen(false) }}
-                className={`text-sm font-medium text-left transition-all ${
-                  activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]'
+                className={`text-sm font-medium text-left tracking-widest uppercase transition-all ${
+                  scrolled
+                    ? activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]'
+                    : 'text-white/90'
                 }`}
+                style={{ fontFamily: 'var(--font-josefin)' }}
               >
                 {link.name}
               </Link>
@@ -169,89 +182,131 @@ export default function LandingPage() {
       </nav>
 
       {/* ===== HERO ===== */}
-      <section className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-4 py-24">
+      <section className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-4">
 
-        {/* Video background */}
-        <video
-          src="/startup_vid.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        {/* Video */}
+        <video src="/startup_vid.mp4" autoPlay muted loop playsInline
+          className="absolute inset-0 w-full h-full object-cover" />
 
-        {/* Dark warm overlay */}
-        <div className="absolute inset-0 bg-[#1C0A00] opacity-40" />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center">
+        <div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto">
 
-          {/* Headline */}
-          <h1
-            className="hero-2 font-serif italic font-bold text-white text-5xl md:text-7xl leading-tight max-w-3xl mb-8"
-          >
+          <p className="hero-1 text-xs font-medium text-[#FFAA80] tracking-widest uppercase mb-4"
+            style={{ fontFamily: 'var(--font-josefin)' }}>
+            ✦ &nbsp; serve your look &nbsp; ✦
+          </p>
+
+          <h1 className="hero-2 font-serif italic font-bold text-white text-5xl md:text-7xl leading-tight mb-4">
             Stop guessing.<br />Start serving.
           </h1>
 
-          {/* Subheadline */}
-          <p className="hero-3 text-lg md:text-xl text-white opacity-80 max-w-xl leading-relaxed mb-10">
+          {/* Animated underline */}
+          <div className="hero-2 flex justify-center mb-8">
+            <div className="headline-line h-0.5 bg-[#FFAA80] rounded-full" />
+          </div>
+
+          <p className="hero-3 text-base md:text-lg text-white/80 max-w-lg leading-relaxed mb-10">
             ZanZan builds your personalized makeup routine for any occasion — skip the tutorials, ditch the guesswork.
           </p>
 
-          {/* CTA buttons */}
-          <div className="hero-4 flex flex-row gap-3">
-            <Link
-              href="/app"
-              className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white text-xs font-medium px-5 py-2 rounded-full hover:scale-105 transition-all shadow-sm"
-            >
-              Build My Look →
+          <div className="hero-4 flex flex-row gap-6">
+            <Link href="/app"
+              className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white text-sm font-medium px-7 py-3 rounded-full hover:scale-105 transition-all shadow-md">
+              Build My Routine
             </Link>
-            <a
-              href="#features"
-              className="border border-white text-white text-xs font-medium px-5 py-2 rounded-full hover:bg-white hover:text-[#F4845F] transition-all"
-            >
+            <a href="#how-it-works"
+              className="border border-white text-white text-sm font-medium px-7 py-3 rounded-full hover:bg-white hover:text-[#F4845F] transition-all">
               See How It Works
             </a>
           </div>
         </div>
 
-        {/* Gradient fade into next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#FFFAF5] z-10 pointer-events-none" />
+        {/* Fade to cream */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#FFFAF5] z-10 pointer-events-none" />
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 flex flex-col items-center gap-1 z-20">
-          <a href="#features" className="flex flex-col items-center gap-1 group">
-            <span className="text-xs text-white/60 group-hover:text-white transition-colors">scroll to explore</span>
-            <span className="text-white text-lg animate-bounce">↓</span>
+        {/* Scroll arrow */}
+        <div className="absolute bottom-8 z-20 flex flex-col items-center gap-1">
+          <a href="#how-it-works" className="flex flex-col items-center gap-1 group">
+            <span className="text-xs text-white/60 group-hover:text-white transition-colors"
+              style={{ fontFamily: 'var(--font-josefin)' }}>scroll to explore</span>
+            <span className="text-white text-xl animate-bounce">↓</span>
           </a>
         </div>
+      </section>
 
+      {/* ===== TICKER ===== */}
+      <div className="bg-[#F4845F] py-3 overflow-hidden">
+        <div className="flex whitespace-nowrap ticker-track">
+          {[...TICKER, ...TICKER].map((item, i) => (
+            <span key={i} className="text-white text-xs font-medium tracking-widest uppercase px-10"
+              style={{ fontFamily: 'var(--font-josefin)' }}>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ===== HOW IT WORKS ===== */}
+      <section id="how-it-works" className="bg-[#FFFAF5] py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="fade-up text-center mb-16">
+            <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
+              style={{ fontFamily: 'var(--font-josefin)' }}>✦ The Process</p>
+            <h2 className="text-4xl font-bold text-[#1C0A00]"
+              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+              Three steps to your look
+            </h2>
+          </div>
+
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Connecting line on desktop */}
+            <div className="hidden md:block absolute top-16 left-1/6 right-1/6 h-px bg-[#FFD4BC] z-0" style={{ left: '18%', right: '18%' }} />
+
+            {STEPS.map((step, i) => (
+              <div key={step.num}
+                className={`fade-up delay-${i + 1} relative bg-white rounded-3xl border border-[#FFD4BC] p-8 shadow-sm overflow-hidden`}>
+                {/* Number watermark */}
+                <div className="absolute -top-4 -right-2 text-8xl font-black text-[#FFD4BC] leading-none select-none pointer-events-none">
+                  {step.num}
+                </div>
+                <div className="relative z-10">
+                  <div className="text-4xl mb-5">{step.icon}</div>
+                  <h3 className="text-lg font-semibold text-[#1C0A00] mb-3"
+                    style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                    {step.title}
+                  </h3>
+                  <p className="text-[#8B5E52] text-sm leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ===== FEATURES ===== */}
-      <section id="features" className="bg-[#FFFAF5] pt-16 pb-24 px-4">
-        <div className="max-w-4xl mx-auto">
+      <section id="features" className="relative overflow-hidden bg-[#FFFAF5] py-24 px-4">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <img src="/zanzan-logo.svg" alt="" aria-hidden="true" className="w-[600px] opacity-5 select-none" />
+        </div>
+        <div className="max-w-4xl mx-auto relative z-10">
           <div className="fade-up text-center mb-14">
-            <h2
-              className="text-3xl md:text-4xl font-bold text-[#1C0A00] mb-3"
-              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
-            >
-              How ZanZan works
+            <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
+              style={{ fontFamily: 'var(--font-josefin)' }}>✦ Why ZanZan</p>
+            <h2 className="text-4xl font-bold text-[#1C0A00]"
+              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+              Built different
             </h2>
-            <p className="text-[#8B5E52]">Four steps. Zero guesswork. One perfect routine.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {FEATURES.map((f, i) => (
-              <div
-                key={f.title}
-                className={`fade-up ${DELAY_CLASSES[i]} bg-[#FFF5F0] rounded-2xl border border-[#FFE8D6] p-7 hover:shadow-sm transition-all`}
-              >
-                <div className="text-4xl mb-4">{f.icon}</div>
-                <h3
-                  className="text-lg font-semibold text-[#1C0A00] mb-2"
-                  style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
-                >
+              <div key={f.title}
+                className={`fade-up delay-${i % 3 + 1} bg-white rounded-3xl border border-[#FFD4BC] p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300`}>
+                <div className="text-5xl mb-5">{f.icon}</div>
+                <h3 className="text-lg font-semibold text-[#1C0A00] mb-2"
+                  style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
                   {f.title}
                 </h3>
                 <p className="text-[#8B5E52] text-sm leading-relaxed">{f.desc}</p>
@@ -261,24 +316,35 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ===== LOOKS PREVIEW ===== */}
-      <section id="looks" className="bg-[#FFFAF5] py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="fade-up mb-10">
-            <h2
-              className="text-3xl md:text-4xl font-bold text-[#1C0A00] mb-3"
-              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
-            >
-              Trending Looks Right Now 🔥
-            </h2>
-            <p className="text-[#8B5E52]">Pick your vibe. ZanZan builds the routine around it.</p>
+      {/* ===== TRENDING LOOKS ===== */}
+      <section id="looks" className="bg-[#FFFAF5] py-24 overflow-hidden">
+        <div className="fade-up text-center mb-12 px-4">
+          <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
+            style={{ fontFamily: 'var(--font-josefin)' }}>✦ What's Hot</p>
+          <h2 className="text-4xl font-bold text-[#1C0A00]"
+            style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+            What's trending right now 🔥
+          </h2>
+        </div>
+
+        {/* Row 1 — scrolls left */}
+        <div className="flex overflow-hidden mb-4">
+          <div className="flex gap-3 row-left whitespace-nowrap">
+            {[...LOOKS_ROW1, ...LOOKS_ROW1].map((look, i) => (
+              <span key={i}
+                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
+                {look}
+              </span>
+            ))}
           </div>
-          <div className="fade-up delay-1 flex flex-wrap justify-center gap-3">
-            {LOOKS.map(look => (
-              <span
-                key={look}
-                className="px-5 py-2.5 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium hover:bg-[#FFAA80] hover:text-white transition-all cursor-default"
-              >
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div className="flex overflow-hidden">
+          <div className="flex gap-3 row-right whitespace-nowrap">
+            {[...LOOKS_ROW2, ...LOOKS_ROW2].map((look, i) => (
+              <span key={i}
+                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
                 {look}
               </span>
             ))}
@@ -286,23 +352,51 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== FREE BETA CTA ===== */}
+      <section className="bg-[#FFFAF5] py-24 px-4">
+        <div className="fade-up max-w-2xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1C0A00] mb-4"
+            style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+            Free during beta — always. ✦
+          </h2>
+          <p className="text-[#8B5E52] text-lg leading-relaxed mb-10">
+            ZanZan is completely free right now. No credit card. No catch. Just your best look.
+          </p>
+          <Link href="/app"
+            className="inline-block bg-[#F4845F] text-white text-base font-semibold px-10 py-4 rounded-2xl hover:scale-105 hover:opacity-95 transition-all shadow-md">
+            Build My Routine →
+          </Link>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
-      <footer className="bg-[#FFFAF5] border-t border-[#FFE8D6] px-6 py-10">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-center sm:text-left">
-            <span
-              className="text-xl text-[#F4845F] italic font-bold"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
-              ZanZan
-            </span>
-            <p className="text-xs text-[#8B5E52] mt-0.5">✦ serve your look ✦</p>
+      <footer className="bg-[#1C0A00] px-6 py-14">
+        <div className="max-w-4xl mx-auto flex flex-col items-center gap-8">
+
+          {/* Logo */}
+          <img src="/zanzan-logo.svg" alt="ZanZan"
+            className="h-16 w-auto brightness-0 invert opacity-80" />
+
+          {/* Links */}
+          <div className="flex gap-8 text-xs text-[#FFAA80] tracking-widest uppercase"
+            style={{ fontFamily: 'var(--font-josefin)' }}>
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <a href="#" className="hover:text-white transition-colors">Contact</a>
+            <a href="#" className="hover:text-white transition-colors">About</a>
           </div>
-          <div className="flex gap-6 text-sm text-[#8B5E52]">
-            <a href="#" className="hover:text-[#F4845F] transition-colors">Privacy</a>
-            <a href="#" className="hover:text-[#F4845F] transition-colors">Terms</a>
-            <a href="#" className="hover:text-[#F4845F] transition-colors">Contact</a>
+
+          {/* Social placeholders */}
+          <div className="flex gap-6 text-[#FFAA80]">
+            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="TikTok">TikTok</a>
+            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="Instagram">Instagram</a>
+            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="Pinterest">Pinterest</a>
           </div>
+
+          {/* Copyright */}
+          <p className="text-white/40 text-xs text-center">
+            © 2025 ZanZan Beauty Studio. All rights reserved.
+          </p>
         </div>
       </footer>
     </>
