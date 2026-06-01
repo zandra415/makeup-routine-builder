@@ -110,20 +110,42 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: 1280, height: 720 }
-      })
+      const constraints = [
+        { video: { facingMode: 'user', width: 1280, height: 720 } },
+        { video: { facingMode: 'user' } },
+        { video: true }
+      ]
+
+      let stream = null
+      for (const constraint of constraints) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia(constraint)
+          break
+        } catch (e) {
+          continue
+        }
+      }
+
+      if (!stream) throw new Error('No camera found')
+
       setCameraStream(stream)
       setShowCamera(true)
+
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream
-          videoRef.current.play()
+          videoRef.current.play().catch(console.error)
         }
-      }, 100)
-    } catch (err) {
+      }, 200)
+    } catch (err: any) {
       console.error('Camera error:', err)
-      alert('Could not access camera. Please allow camera permissions and try again.')
+      if (err.name === 'NotAllowedError') {
+        alert('Camera permission denied. Click the lock icon in your address bar, set Camera to Allow, then refresh the page.')
+      } else if (err.name === 'NotFoundError') {
+        alert('No camera found on this device.')
+      } else {
+        alert('Could not start camera: ' + err.message)
+      }
     }
   }
 
