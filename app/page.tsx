@@ -328,41 +328,64 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FEATURES ===== */}
-      <section id="features" className="relative overflow-hidden bg-[#FFFAF5] py-12 px-4">
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <img src="/zanzan-logo.svg" alt="" aria-hidden="true" className="w-[600px] opacity-5 select-none" />
-        </div>
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="fade-up text-center mb-14">
-            <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
-              style={{ fontFamily: 'var(--font-josefin)' }}>✦ Why ZanZan</p>
-            <h2 className="text-5xl text-[#F4845F]"
-              style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-              Built different
+      <section id="features" className="relative overflow-hidden py-24 px-4" style={{ background: '#0A1A0F' }}>
+        <div className="max-w-5xl mx-auto relative z-10">
+
+          <div className="text-center mb-16">
+            <p className="text-xs font-medium tracking-[0.3em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#F5E6C8' }}>✦ Why ZanZan</p>
+            <h2 className="text-5xl md:text-6xl text-white" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400', lineHeight: '1.2' }}>
+              Every look you have ever wanted
+              <br />starts right here.
             </h2>
+            <div className="w-12 h-px mx-auto mt-8" style={{ background: '#F5E6C8' }} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {FEATURES.map((f, i) => {
-              const icons = [
-                <Scan size={36} color="#F4845F" weight="light" />,
-                <ShoppingBag size={36} color="#F4845F" weight="light" />,
-                <Palette size={36} color="#F4845F" weight="light" />,
-                <ListChecks size={36} color="#F4845F" weight="light" />,
-              ]
-              return (
-                <div key={f.title}
-                  className={`fade-up delay-${i % 3 + 1} bg-white rounded-3xl border border-[#FFD4BC] p-8 hover:-translate-y-1 transition-all duration-300`}
-                  style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.08)' }}>
-                  <div className="mb-5">{icons[i]}</div>
-                  <h3 className="text-lg font-semibold text-[#1C0A00] mb-2"
-                    style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
-                    {f.title}
-                  </h3>
-                  <p className="text-[#8B5E52] text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              )
-            })}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+              <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Face Analysis</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Your face. Read instantly.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Upload a selfie and our AI reads your face shape, skin tone, eye shape and undertone in seconds. No questionnaire. No guessing.</p>
+            </div>
+
+            <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+              <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Your Products</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What you own. Not what to buy.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Tell us your products — any brand, any shade. We build your routine around your makeup bag, not ours.</p>
+            </div>
+
+            <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+              <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Trending Looks</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What is hot. Right now.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Clean Girl. Mob Wife. Latte Makeup. We pull the looks blowing up on TikTok and build your routine around them.</p>
+            </div>
+
+            <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+              <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Personalized Steps</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Steps made for your face only.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Not a generic tutorial. Every step is written for your exact face shape, features and products. Advice that actually fits.</p>
+            </div>
           </div>
+
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 rounded-3xl" style={{ background: 'rgba(245,230,200,0.05)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+            <div className="flex gap-12 flex-wrap justify-center">
+              <div className="text-center">
+                <p className="text-4xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-syne)' }}>2min</p>
+                <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#4A7055' }}>to build your routine</p>
+              </div>
+              <div className="text-center">
+                <p className="text-4xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-syne)' }}>100%</p>
+                <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#4A7055' }}>personalized</p>
+              </div>
+              <div className="text-center">
+                <p className="text-4xl font-bold text-white mb-1" style={{ fontFamily: 'var(--font-syne)' }}>Free</p>
+                <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#4A7055' }}>during beta</p>
+              </div>
+            </div>
+            <a href="/glam-lab" className="flex-shrink-0 px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-200 hover:opacity-80" style={{ background: '#F5E6C8', color: '#0A1A0F', fontFamily: 'var(--font-josefin)' }}>
+              Start Building Your Look →
+            </a>
+          </div>
+
         </div>
       </section>
 
