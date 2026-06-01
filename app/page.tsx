@@ -327,6 +327,40 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== TRENDING LOOKS ===== */}
+      <section id="looks" className="bg-[#FFFAF5] py-12 overflow-hidden">
+        <div className="fade-up text-center mb-12 px-4">
+          <h2 className="text-4xl text-[#1C0A00]"
+            style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
+            What's Trending Right Now ✦
+          </h2>
+        </div>
+
+        {/* Row 1 — scrolls left */}
+        <div className="flex overflow-hidden mb-4">
+          <div className="flex gap-3 row-left whitespace-nowrap">
+            {[...LOOKS_ROW1, ...LOOKS_ROW1].map((look, i) => (
+              <span key={i}
+                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
+                {look}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div className="flex overflow-hidden">
+          <div className="flex gap-3 row-right whitespace-nowrap">
+            {[...LOOKS_ROW2, ...LOOKS_ROW2].map((look, i) => (
+              <span key={i}
+                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
+                {look}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== FEATURES ===== */}
       <section id="features" className="relative overflow-hidden py-24 px-4" style={{ background: '#0A1A0F' }}>
         <div className="max-w-5xl mx-auto relative z-10">
@@ -386,40 +420,6 @@ export default function LandingPage() {
             </a>
           </div>
 
-        </div>
-      </section>
-
-      {/* ===== TRENDING LOOKS ===== */}
-      <section id="looks" className="bg-[#FFFAF5] py-12 overflow-hidden">
-        <div className="fade-up text-center mb-12 px-4">
-          <h2 className="text-4xl text-[#1C0A00]"
-            style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-            What's Trending Right Now ✦
-          </h2>
-        </div>
-
-        {/* Row 1 — scrolls left */}
-        <div className="flex overflow-hidden mb-4">
-          <div className="flex gap-3 row-left whitespace-nowrap">
-            {[...LOOKS_ROW1, ...LOOKS_ROW1].map((look, i) => (
-              <span key={i}
-                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
-                {look}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Row 2 — scrolls right */}
-        <div className="flex overflow-hidden">
-          <div className="flex gap-3 row-right whitespace-nowrap">
-            {[...LOOKS_ROW2, ...LOOKS_ROW2].map((look, i) => (
-              <span key={i}
-                className="px-6 py-3 bg-[#FFE8D6] text-[#C7522A] rounded-full text-sm font-medium whitespace-nowrap cursor-default hover:bg-[#FFAA80] hover:text-white transition-all">
-                {look}
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 
