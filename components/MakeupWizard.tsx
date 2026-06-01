@@ -369,16 +369,19 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                       </div>
                     ) : (
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <button
-                          onClick={startCamera}
-                          className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] hover:bg-[#FFE8D6] transition-all cursor-pointer text-[#F4845F] text-sm font-medium"
-                        >
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                            <circle cx="12" cy="13" r="4"/>
-                          </svg>
-                          Take a Selfie
-                        </button>
+                        <div className="flex flex-col items-center">
+                          <button
+                            onClick={startCamera}
+                            className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] hover:bg-[#FFE8D6] transition-all cursor-pointer text-[#F4845F] text-sm font-medium"
+                          >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                              <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                            Take a Selfie
+                          </button>
+                          <p className="text-xs text-[#C4977E] text-center mt-1">Best on mobile 📱</p>
+                        </div>
                         <label className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFD4BC] bg-[#FFFAF5] hover:bg-[#FFF0E8] transition-all cursor-pointer text-[#8B5E52] text-sm font-medium">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
