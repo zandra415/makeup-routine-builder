@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -28,10 +28,32 @@ const CATEGORIES = ['All', 'Everyday', 'Evening', 'Date Night', 'Festival']
 export default function TrendingPage() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [hoveredLook, setHoveredLook] = useState<string | null>(null)
+  const [trendingLooks, setTrendingLooks] = useState(TRENDING_LOOKS)
+
+  useEffect(() => {
+    const fetchTrends = async () => {
+      try {
+        const res = await fetch('/api/trending-looks')
+        const data = await res.json()
+        if (data.looks) {
+          setTrendingLooks(prev => prev.map(look => {
+            const live = data.looks.find((l: any) =>
+              look.name.toLowerCase().includes(l.name.toLowerCase()) ||
+              l.name.toLowerCase().includes(look.name.toLowerCase())
+            )
+            return live ? { ...look, heat: live.heat } : look
+          }).sort((a, b) => b.heat - a.heat))
+        }
+      } catch (err) {
+        console.error('Trends fetch failed, using static data')
+      }
+    }
+    fetchTrends()
+  }, [])
 
   const filtered = activeCategory === 'All'
-    ? TRENDING_LOOKS
-    : TRENDING_LOOKS.filter(l => l.category === activeCategory)
+    ? trendingLooks
+    : trendingLooks.filter(l => l.category === activeCategory)
 
   return (
     <div className="min-h-screen bg-[#FFFAF5]">
@@ -91,6 +113,9 @@ export default function TrendingPage() {
             </button>
           ))}
         </div>
+        <p className="text-xs text-[#C4977E] mt-4" style={{ fontFamily: 'var(--font-josefin)' }}>
+          Updated hourly based on real search trends ✦
+        </p>
       </div>
 
       {/* LOOKS GRID */}
