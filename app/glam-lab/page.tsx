@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 import MakeupWizard from '@/components/MakeupWizard'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,10 +9,6 @@ import Image from 'next/image'
 export default function GlamLabPage() {
   const [userId, setUserId] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
 
   useEffect(() => {
     const getUser = async () => {
@@ -21,6 +17,11 @@ export default function GlamLabPage() {
       setLoading(false)
     }
     getUser()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id)
+      setLoading(false)
+    })
+    return () => subscription.unsubscribe()
   }, [])
 
   if (loading) return (
