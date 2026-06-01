@@ -69,6 +69,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const [routine, setRoutine] = useState<Routine | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [limitReached, setLimitReached] = useState(false)
   const [saveEmail, setSaveEmail] = useState('')
   const [savingEmail, setSavingEmail] = useState(false)
   const [emailSaved, setEmailSaved] = useState(false)
@@ -180,6 +181,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const handleNextFromStep1 = async () => {
     setLoading(true)
     setError('')
+    setLimitReached(false)
     try {
       let body: Record<string, unknown>
 
@@ -262,6 +264,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const handleGenerate = async () => {
     setLoading(true)
     setError('')
+    setLimitReached(false)
     try {
       const filledProducts = products.filter(p => p.trim())
 
@@ -271,9 +274,17 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
         body: JSON.stringify({
           faceAnalysis,
           products: filledProducts,
-          desiredLook
+          desiredLook,
+          userId
         })
       })
+
+      if (res.status === 429) {
+        const data = await res.json()
+        setError(data.message)
+        setLimitReached(true)
+        return
+      }
 
       if (!res.ok) throw new Error('Routine generation failed')
 
@@ -331,8 +342,17 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
 
         {/* ---- Error Banner ---- */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
-            {error}
+          <div className={`mb-6 p-4 rounded-2xl border text-sm ${limitReached ? 'bg-[#FFF0E8] border-[#FFD4BC] text-[#1C0A00]' : 'bg-red-50 border-red-200 text-red-600'}`}>
+            <p className={limitReached ? 'font-medium text-[#C7522A] mb-2' : ''}>{error}</p>
+            {limitReached && (
+              <a
+                href="/auth"
+                className="inline-block mt-1 px-5 py-2 rounded-full bg-[#F4845F] text-white text-xs font-medium tracking-widest uppercase hover:bg-[#FFAA80] transition-all"
+                style={{ fontFamily: 'var(--font-josefin)' }}
+              >
+                Sign in to unlock more →
+              </a>
+            )}
           </div>
         )}
 

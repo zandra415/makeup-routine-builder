@@ -4,22 +4,36 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { checkRateLimit } from '@/lib/rateLimit'
 
 const openai = new OpenAI()
 
-// TypeScript type: defines the shape of one instruction step
 type RoutineStep = {
   stepNumber: number
   title: string
-  product: string       // which product from the user's list to use
-  technique: string     // how to apply it
-  placement: string     // exactly where on the face
-  tip: string           // personalized tip based on their face analysis
+  product: string
+  technique: string
+  placement: string
+  tip: string
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { faceAnalysis, products, desiredLook } = await req.json()
+    const body = await req.json()
+    const { faceAnalysis, products, desiredLook } = body
+    const identifier = body.userId || req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
+
+    const { allowed, remaining, resetDate } = await checkRateLimit(identifier)
+    if (!allowed) {
+      return NextResponse.json(
+        {
+          error: 'limit_reached',
+          message: `You've used all 3 free routines this month. Your limit resets on ${resetDate}.`,
+          resetDate
+        },
+        { status: 429 }
+      )
+    }
 
     // Validate that we have everything we need
     if (!faceAnalysis || !products || !desiredLook) {

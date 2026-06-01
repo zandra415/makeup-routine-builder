@@ -149,12 +149,9 @@ export default function LandingPage() {
           </div>
 
           {/* Right: CTA */}
-          <Link
-            href="/app"
-            className="px-5 py-2 text-sm rounded-full bg-[#F4845F] text-white hover:bg-[#FFAA80] transition-colors duration-200"
-          >
-            Build My Look →
-          </Link>
+          <a href="/account" className="px-5 py-2 rounded-full bg-[#F4845F] text-white text-[10px] tracking-widest uppercase hover:bg-[#FFAA80] transition-colors duration-200" style={{ fontFamily: 'var(--font-josefin)' }}>
+            Sign in to earn Glow Points →
+          </a>
         </div>
 
         {/* Mobile dropdown */}

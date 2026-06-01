@@ -80,13 +80,12 @@ export default function AccountPage() {
         <Link href="/">
           <Image src="/zanzan-logo.svg" alt="ZanZan" width={80} height={32} className="h-16 w-auto" />
         </Link>
-        <button
-          onClick={handleSignOut}
-          className="text-xs tracking-widest uppercase text-[#8B5E52] hover:text-[#F4845F] transition-colors"
-          style={{ fontFamily: 'var(--font-josefin)' }}
-        >
-          Sign Out
-        </button>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFF0E8] border border-[#FFD4BC]">
+          <span className="text-sm">👑</span>
+          <span className="text-xs text-[#1C0A00] font-medium" style={{ fontFamily: 'var(--font-josefin)' }}>
+            {routines.length * 50} Glow Points
+          </span>
+        </div>
       </nav>
 
       {/* HEADER */}
@@ -104,7 +103,7 @@ export default function AccountPage() {
           {[
             { label: 'Routines Saved', value: routines.length },
             { label: 'Looks Built', value: routines.length },
-            { label: 'Member Since', value: new Date(user?.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) }
+            { label: 'Glow Points', value: routines.length * 50 + ' ✦' }
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-3xl border border-[#FFD4BC] p-6 text-center" style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.06)' }}>
               <p className="text-3xl font-bold text-[#F4845F] mb-1" style={{ fontFamily: 'var(--font-syne)' }}>{stat.value}</p>
