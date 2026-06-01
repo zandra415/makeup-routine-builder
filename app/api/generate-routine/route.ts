@@ -1,7 +1,3 @@
-// app/api/generate-routine/route.ts
-// This is the heart of the app — it takes face analysis, products, and
-// desired look, then asks GPT-4o to create a personalized routine.
-
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { checkRateLimit } from '@/lib/rateLimit'
@@ -23,7 +19,7 @@ export async function POST(req: NextRequest) {
     const { faceAnalysis, products, desiredLook } = body
     const identifier = body.userId || req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
 
-    const { allowed, remaining, resetDate } = await checkRateLimit(identifier)
+    const { allowed, resetDate } = await checkRateLimit(identifier)
     if (!allowed) {
       return NextResponse.json(
         {
@@ -35,7 +31,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Validate that we have everything we need
     if (!faceAnalysis || !products || !desiredLook) {
       return NextResponse.json(
         { error: 'faceAnalysis, products, and desiredLook are all required' },
@@ -43,9 +38,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Build the prompt.
-    // A "prompt" is the instruction we send to the AI — like writing
-    // a very detailed assignment for a very capable intern.
     const systemPrompt = `You are an expert professional makeup artist with 15 years
 of experience. You give precise, personalized makeup application instructions.
 You always consider the user's specific face features when giving placement advice.
@@ -82,8 +74,6 @@ Return a JSON object with this exact structure:
     const response = await openai.chat.completions.create({
       model: 'gpt-4o',
       max_tokens: 2000,
-      // "temperature" controls creativity. 0 = robotic/consistent, 1 = creative/varied.
-      // 0.7 is a good balance for instructional content.
       temperature: 0.7,
       messages: [
         { role: 'system', content: systemPrompt },
@@ -99,9 +89,6 @@ Return a JSON object with this exact structure:
 
   } catch (error) {
     console.error('generate-routine error:', error)
-    return NextResponse.json(
-      { error: 'Failed to generate routine' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to generate routine' }, { status: 500 })
   }
 }

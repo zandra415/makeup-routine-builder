@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Barcode, Scan, ShoppingBag, Palette, ListChecks } from '@phosphor-icons/react'
+import { Barcode } from '@phosphor-icons/react'
 
 const NAV_LINKS = [
   { name: 'Home',      href: '/' },
@@ -12,22 +12,6 @@ const NAV_LINKS = [
   { name: 'Account',   href: '/account' },
 ]
 
-const STEPS = [
-  { num: '01', icon: '🤳', title: 'Upload Your Face', desc: 'Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.' },
-  { num: '02', icon: '🛍️', title: 'Add Your Products', desc: 'Tell us what\'s in your makeup bag. Any brand, any shade — we work with what you already own.' },
-  { num: '03', icon: '🪄', title: 'Get Your Routine', desc: 'Pick a look and receive a personalized step-by-step routine built just for your face.' },
-]
-
-const FEATURES = [
-  { icon: '🤳', title: 'Face Analysis', desc: 'Upload a selfie or build your avatar for a full personalized facial read.' },
-  { icon: '🛍️', title: 'Your Products Only', desc: 'No shopping list required. We work with exactly what\'s already in your collection.' },
-  { icon: '🎨', title: 'Trending Looks', desc: 'Choose from Gen Z styles curated for every mood, vibe, and occasion.' },
-  { icon: '🎯', title: 'Personalized Steps', desc: 'Step-by-step instructions tailored specifically to your face shape and features.' },
-]
-
-const LOOKS_ROW1 = ['Clean Girl', 'Soft Glam', 'Brat Summer', 'Dark Feminine', 'Latte Makeup', 'Blush Everything', 'Mob Wife Glam', 'Coquette']
-const LOOKS_ROW2 = ['Strawberry Makeup', 'Old Money Glam', 'E-Girl Edge', 'Siren Eye', 'Glazed Skin', 'Vanilla Girl', 'Balletcore', 'Indie Sleaze']
-const TICKER = ['✦ 100% Free During Beta', '✦ No Account Needed', '✦ Takes 2 Minutes', '✦ Built For Real People']
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('Home')
@@ -88,35 +72,13 @@ export default function LandingPage() {
         }
         .btn-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
 
-        @keyframes scroll-left {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-        @keyframes scroll-right {
-          from { transform: translateX(-50%); }
-          to   { transform: translateX(0); }
-        }
-        .row-left  { animation: scroll-left  28s linear infinite; }
-        .row-right { animation: scroll-right 28s linear infinite; }
-
-        @keyframes ticker {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-        .ticker-track { animation: ticker 18s linear infinite; }
-
         section[id] { scroll-margin-top: 80px; }
       `}</style>
 
-      {/* ===== NAVBAR ===== */}
       <nav className={`fixed top-0 left-0 right-0 z-50 px-8 py-4 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/90 backdrop-blur-sm border-b border-[#FFD4BC]'
-          : 'bg-transparent'
+        scrolled ? 'bg-white/90 backdrop-blur-sm border-b border-[#FFD4BC]' : 'bg-transparent'
       }`}>
         <div className="relative flex items-center justify-between">
-
-          {/* Left: desktop nav links */}
           <div className="flex items-center">
             <div className="hidden md:flex items-center gap-6">
               {NAV_LINKS.map(link => (
@@ -143,19 +105,13 @@ export default function LandingPage() {
               ☰
             </button>
           </div>
-
-          {/* Center: logo */}
           <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
             <img src="/zanzan-logo.svg" alt="ZanZan" className="h-16 w-auto" />
           </div>
-
-          {/* Right: CTA */}
           <a href="/account" className="px-5 py-2 rounded-full bg-[#F4845F] text-white text-[10px] tracking-widest uppercase hover:bg-[#FFAA80] transition-colors duration-200" style={{ fontFamily: 'var(--font-josefin)' }}>
             Sign in to earn Glow Points →
           </a>
         </div>
-
-        {/* Mobile dropdown */}
         {menuOpen && (
           <div className={`md:hidden mt-3 pb-4 border-t flex flex-col gap-4 pt-4 ${scrolled ? 'border-[#FFD4BC]' : 'border-white/20'}`}>
             {NAV_LINKS.map(link => (
@@ -164,9 +120,7 @@ export default function LandingPage() {
                 href={link.href}
                 onClick={() => { setActiveTab(link.name); setMenuOpen(false) }}
                 className={`text-sm font-medium text-left tracking-widest uppercase transition-all ${
-                  scrolled
-                    ? activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]'
-                    : 'text-white/90'
+                  scrolled ? activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]' : 'text-white/90'
                 }`}
                 style={{ fontFamily: 'var(--font-josefin)' }}
               >
@@ -177,83 +131,51 @@ export default function LandingPage() {
         )}
       </nav>
 
-      {/* ===== HERO ===== */}
       <section className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-4">
-
-        {/* Video */}
-        <video src="/startup_vid.mp4" autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover" />
-
-        {/* Gradient overlay */}
+        <video src="/startup_vid.mp4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
-
-        {/* Content */}
         <div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto">
-
-          <p className="hero-1 text-xs font-medium text-[#FFAA80] tracking-widest uppercase mb-4"
-            style={{ fontFamily: 'var(--font-josefin)' }}>
+          <p className="hero-1 text-xs font-medium text-[#FFAA80] tracking-widest uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)' }}>
             ✦ &nbsp; serve your look &nbsp; ✦
           </p>
-
           <h1 className="hero-2 font-serif italic font-bold text-white text-5xl md:text-7xl leading-tight mb-4">
             Stop guessing.<br />Start serving.
           </h1>
-
-          {/* Animated underline */}
           <div className="hero-2 flex justify-center mb-8">
             <div className="headline-line h-0.5 bg-[#FFAA80] rounded-full" />
           </div>
-
           <p className="hero-3 text-base md:text-lg text-white/80 max-w-lg leading-relaxed mb-10">
             ZanZan builds your personalized makeup routine for any occasion — skip the tutorials, ditch the guesswork.
           </p>
-
           <div className="hero-4 flex flex-row gap-6">
-            <Link href="/app"
-              className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white text-sm font-medium px-7 py-3 rounded-full hover:scale-105 transition-all shadow-md">
+            <Link href="/app" className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white text-sm font-medium px-7 py-3 rounded-full hover:scale-105 transition-all shadow-md">
               Build My Routine
             </Link>
-            <a href="#how-it-works"
-              className="border border-white text-white text-sm font-medium px-7 py-3 rounded-full hover:bg-white hover:text-[#F4845F] transition-all">
+            <a href="#how-it-works" className="border border-white text-white text-sm font-medium px-7 py-3 rounded-full hover:bg-white hover:text-[#F4845F] transition-all">
               See How It Works
             </a>
           </div>
         </div>
-
-        {/* Fade to cream */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#FFFAF5] z-10 pointer-events-none" />
-
-        {/* Scroll arrow */}
         <div className="absolute bottom-8 z-20 flex flex-col items-center gap-1">
           <a href="#how-it-works" className="flex flex-col items-center gap-1 group">
-            <span className="text-xs text-white/60 group-hover:text-white transition-colors"
-              style={{ fontFamily: 'var(--font-josefin)' }}>scroll to explore</span>
+            <span className="text-xs text-white/60 group-hover:text-white transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>scroll to explore</span>
             <span className="text-white text-xl animate-bounce">↓</span>
           </a>
         </div>
       </section>
 
-      {/* ===== HOW IT WORKS ===== */}
       <section id="how-it-works" className="bg-[#FFFAF5] py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="fade-up text-center mb-16">
             <p className="text-xs text-[#8B5E52] uppercase mb-3" style={{ letterSpacing: '0.3em' }}>The Process</p>
-            <h2 className="text-6xl text-[#F4845F]"
-              style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400', letterSpacing: '-0.01em' }}>
+            <h2 className="text-6xl text-[#F4845F]" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400', letterSpacing: '-0.01em' }}>
               Three Steps to Your Look
             </h2>
           </div>
-
           <div className="relative max-w-sm mx-auto">
-
-            {/* Cards wrapper */}
             <div className="overflow-hidden rounded-3xl">
-              <div
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${activeStep * 100}%)` }}
-              >
-
-                {/* Card 1 */}
+              <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${activeStep * 100}%)` }}>
                 <div className="flex-shrink-0 w-full bg-[#FFF0E8] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
                   <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
                   <div className="relative z-10">
@@ -265,23 +187,15 @@ export default function LandingPage() {
                     </div>
                   </div>
                 </div>
-
-                {/* Card 2 */}
                 <div className="flex-shrink-0 w-full bg-[#FFE8D6] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
                   <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>02</span>
                   <div className="relative z-10">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><rect x="8" y="8" width="24" height="28" rx="3" stroke="#F4845F" strokeWidth="1.5"/><line x1="14" y1="16" x2="26" y2="16" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/><line x1="14" y1="22" x2="22" y2="22" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/></svg>
                     <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300', letterSpacing: '0.05em' }}>Add Your Products</h3>
                     <p className="text-sm text-[#8B5E52] leading-relaxed mb-6">Tell us what is in your makeup bag. Any brand, any shade — we work with what you already own.</p>
-                    <input
-                      type="text"
-                      placeholder="e.g. Rare Beauty, NARS, e.l.f."
-                      className="w-full px-4 py-3 text-sm rounded-full border border-[#FFAA80] bg-[#FFF5EE] text-[#1C0A00] outline-none focus:border-[#F4845F] placeholder-[#C4977E]"
-                    />
+                    <input type="text" placeholder="e.g. Rare Beauty, NARS, e.l.f." className="w-full px-4 py-3 text-sm rounded-full border border-[#FFAA80] bg-[#FFF5EE] text-[#1C0A00] outline-none focus:border-[#F4845F] placeholder-[#C4977E]" />
                   </div>
                 </div>
-
-                {/* Card 3 */}
                 <div className="flex-shrink-0 w-full bg-[#F4845F] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
                   <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
                   <div className="relative z-10">
@@ -290,86 +204,57 @@ export default function LandingPage() {
                     <p className="text-sm text-white opacity-90 leading-relaxed mb-6">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
                     <div className="flex flex-wrap gap-2">
                       {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map((look) => (
-                        <span key={look} className="px-4 py-2 text-xs rounded-full border border-white bg-transparent text-white hover:bg-white hover:text-[#F4845F] cursor-pointer transition-all duration-200">
-                          {look}
-                        </span>
+                        <span key={look} className="px-4 py-2 text-xs rounded-full border border-white bg-transparent text-white hover:bg-white hover:text-[#F4845F] cursor-pointer transition-all duration-200">{look}</span>
                       ))}
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
-
-            {/* Arrow controls */}
             <div className="flex items-center justify-between mt-6">
-              <button
-                onClick={() => setActiveStep(prev => Math.max(0, prev - 1))}
-                disabled={activeStep === 0}
-                className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30"
-              >←</button>
-
-              {/* Dots */}
+              <button onClick={() => setActiveStep(prev => Math.max(0, prev - 1))} disabled={activeStep === 0} className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30">←</button>
               <div className="flex gap-2">
                 {[0, 1, 2].map(i => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveStep(i)}
-                    className={`transition-all duration-300 rounded-full ${activeStep === i ? 'w-6 h-2 bg-[#F4845F]' : 'w-2 h-2 bg-[#FFD4BC]'}`}
-                  />
+                  <button key={i} onClick={() => setActiveStep(i)} className={`transition-all duration-300 rounded-full ${activeStep === i ? 'w-6 h-2 bg-[#F4845F]' : 'w-2 h-2 bg-[#FFD4BC]'}`} />
                 ))}
               </div>
-
-              <button
-                onClick={() => setActiveStep(prev => Math.min(2, prev + 1))}
-                disabled={activeStep === 2}
-                className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30"
-              >→</button>
+              <button onClick={() => setActiveStep(prev => Math.min(2, prev + 1))} disabled={activeStep === 2} className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30">→</button>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* ===== FEATURES ===== */}
       <section id="features" className="py-24 px-4" style={{ background: '#0A1A0F' }}>
         <div className="max-w-5xl mx-auto">
-
           <div className="text-center mb-16">
             <p className="text-xs font-medium tracking-[0.3em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#F5E6C8' }}>✦ Why ZanZan</p>
             <h2 className="text-5xl md:text-6xl text-white" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400', lineHeight: '1.2' }}>
-              Every look you have ever wanted
-              <br />starts right here.
+              Every look you have ever wanted<br />starts right here.
             </h2>
             <div className="w-12 h-px mx-auto mt-8" style={{ background: '#F5E6C8' }} />
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Face Analysis</p>
               <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Your face. Read instantly.</p>
               <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Upload a selfie and our AI reads your face shape, skin tone, eye shape and undertone in seconds. No questionnaire. No guessing.</p>
             </div>
-
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Your Products</p>
               <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What you own. Not what to buy.</p>
               <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Tell us your products — any brand, any shade. We build your routine around your makeup bag, not ours.</p>
             </div>
-
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Trending Looks</p>
               <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What is hot. Right now.</p>
               <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Clean Girl. Mob Wife. Latte Makeup. We pull the looks blowing up on TikTok and build your routine around them.</p>
             </div>
-
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Personalized Steps</p>
               <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Steps made for your face only.</p>
               <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Not a generic tutorial. Every step is written for your exact face shape, features and products. Advice that actually fits.</p>
             </div>
           </div>
-
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 rounded-3xl" style={{ background: 'rgba(245,230,200,0.05)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
             <div className="flex gap-12 flex-wrap justify-center">
               <div className="text-center">
@@ -389,28 +274,23 @@ export default function LandingPage() {
               Start Building Your Look →
             </a>
           </div>
-
         </div>
       </section>
 
-      {/* ===== FREE BETA CTA ===== */}
       <section className="bg-[#FFFAF5] py-24 px-4">
         <div className="fade-up max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#1C0A00] mb-4"
-            style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1C0A00] mb-4" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
             Free during beta — always. ✦
           </h2>
           <p className="text-[#8B5E52] text-lg leading-relaxed mb-10">
             ZanZan is completely free right now. No credit card. No catch. Just your best look.
           </p>
-          <Link href="/app"
-            className="px-10 py-4 rounded-full bg-[#F4845F] text-white text-sm font-medium tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-300 hover:-translate-y-1">
+          <Link href="/app" className="px-10 py-4 rounded-full bg-[#F4845F] text-white text-sm font-medium tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-300 hover:-translate-y-1">
             Build My Routine →
           </Link>
         </div>
       </section>
 
-      {/* ===== FOOTER ===== */}
       <footer className="bg-[#FFF0E8] py-12 text-center border-t border-[#FFD4BC]">
         <img src="/zanzan-logo.svg" alt="ZanZan" className="h-12 w-auto mx-auto mb-4" />
         <p className="text-[#8B5E52] text-xs tracking-widest uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)' }}>✦ serve your look ✦</p>
