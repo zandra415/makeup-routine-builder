@@ -115,15 +115,15 @@ export default function LandingPage() {
 
           {/* Left: desktop nav links */}
           <div className="flex items-center">
-            <div className="hidden md:flex items-center gap-5">
+            <div className="hidden md:flex items-center gap-6">
               {NAV_LINKS.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
-                  className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-wider uppercase transition-all ${
+                  className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-widest uppercase transition-all ${
                     activeTab === link.name
-                      ? scrolled ? 'text-[#F4845F] border-b-2 border-[#F4845F]' : 'text-white border-b-2 border-white'
+                      ? scrolled ? 'text-[#F4845F] border-b border-[#F4845F]' : 'text-white border-b border-white'
                       : scrolled ? 'text-[#8B5E52] hover:text-[#F4845F]' : 'text-white/80 hover:text-white'
                   }`}
                   style={{ fontFamily: 'var(--font-josefin)' }}
@@ -143,17 +143,13 @@ export default function LandingPage() {
 
           {/* Center: logo */}
           <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
-            <img src="/zanzan-logo.svg" alt="ZanZan" className="h-20 w-auto" />
+            <img src="/zanzan-logo.svg" alt="ZanZan" className="h-16 w-auto" />
           </div>
 
           {/* Right: CTA */}
           <Link
             href="/app"
-            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all hover:scale-105 ${
-              scrolled
-                ? 'btn-pulse bg-[#F4845F] text-white shadow-sm'
-                : 'border border-white text-white hover:bg-white hover:text-[#F4845F]'
-            }`}
+            className="rounded-full px-5 py-2 text-sm font-medium transition-all hover:scale-105 border border-[#1C0A00] text-[#1C0A00]"
           >
             Build My Look →
           </Link>
