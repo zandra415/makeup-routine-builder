@@ -1,7 +1,15 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+
+const NAV_LINKS = [
+  { name: 'Home',      href: '/' },
+  { name: 'Glam Lab', href: '/glam-lab' },
+  { name: 'Trending',  href: '/trending' },
+  { name: 'Community', href: '/community' },
+  { name: 'Account',   href: '/account' },
+]
 
 const FEATURES = [
   {
@@ -35,6 +43,9 @@ const LOOKS = [
 const DELAY_CLASSES = ['delay-1', 'delay-2', 'delay-3', 'delay-4']
 
 export default function LandingPage() {
+  const [activeTab, setActiveTab] = useState('Home')
+  const [menuOpen, setMenuOpen] = useState(false)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -52,6 +63,8 @@ export default function LandingPage() {
     <>
       <style>{`
         html { scroll-behavior: smooth; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
 
         .fade-up {
           opacity: 0;
@@ -75,40 +88,86 @@ export default function LandingPage() {
         .hero-2 { animation: heroIn 0.8s ease 0.2s both; }
         .hero-3 { animation: heroIn 0.8s ease 0.4s both; }
         .hero-4 { animation: heroIn 0.8s ease 0.6s both; }
+
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(244, 132, 95, 0.45); }
+          50%       { box-shadow: 0 0 0 8px rgba(244, 132, 95, 0); }
+        }
+        .btn-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
       `}</style>
 
       {/* ===== NAVBAR ===== */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-[#FFE8D6] px-6 py-3 flex items-center justify-between">
-        <div>
-          <span
-            className="text-2xl text-[#F4845F] italic font-bold"
-            style={{ fontFamily: 'Georgia, serif' }}
-          >
-            ZanZan
-          </span>
-          <p className="text-[10px] text-[#8B5E52] leading-none mt-0.5">✦ serve your look ✦</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/auth"
-            className="px-4 py-2 rounded-xl border border-[#F4845F] text-[#F4845F] text-sm font-medium hover:bg-[#FFF0E8] transition-all"
-          >
-            Sign In
-          </Link>
+      <nav className="sticky top-0 z-50 bg-white border-b border-[#FFD4BC] px-6 py-3">
+        <div className="relative flex items-center justify-between">
+
+          {/* Left: desktop nav links / mobile hamburger */}
+          <div className="flex items-center">
+            <div className="hidden md:flex items-center gap-6">
+              {NAV_LINKS.map(link => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setActiveTab(link.name)}
+                  className={`text-sm font-medium whitespace-nowrap pb-0.5 transition-all ${
+                    activeTab === link.name
+                      ? 'text-[#F4845F] border-b-2 border-[#F4845F]'
+                      : 'text-[#8B5E52] hover:text-[#F4845F]'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+            <button
+              className="md:hidden text-2xl text-[#F4845F] leading-none"
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Menu"
+            >
+              ☰
+            </button>
+          </div>
+
+          {/* Center: logo — absolutely centered */}
+          <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
+            <span
+              className="text-2xl text-[#F4845F] italic font-bold"
+              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
+            >
+              ZanZan
+            </span>
+          </div>
+
+          {/* Right: CTA button */}
           <Link
             href="/app"
-            className="px-4 py-2 rounded-xl bg-[#F4845F] text-white text-sm font-medium hover:opacity-90 transition-all"
+            className="btn-pulse bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white rounded-full px-5 py-2 text-sm font-medium hover:scale-105 transition-all"
           >
-            Get Started
+            Build My Look →
           </Link>
         </div>
+
+        {/* Mobile dropdown */}
+        {menuOpen && (
+          <div className="md:hidden mt-3 pb-3 border-t border-[#FFD4BC] flex flex-col gap-4 pt-4">
+            {NAV_LINKS.map(link => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => { setActiveTab(link.name); setMenuOpen(false) }}
+                className={`text-sm font-medium text-left transition-all ${
+                  activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* ===== HERO ===== */}
       <section className="min-h-screen bg-[#FFFAF5] flex flex-col items-center justify-center text-center px-4 py-24">
-        <p className="hero-1 text-xs font-semibold text-[#F4845F] tracking-widest uppercase mb-5">
-          ✦ AI-Powered Makeup Routines
-        </p>
+
         <h1
           className="hero-2 text-5xl md:text-7xl font-bold text-[#1C0A00] leading-tight max-w-3xl mb-6"
           style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
@@ -116,7 +175,7 @@ export default function LandingPage() {
           Your face.<br />Your products.<br />Your look.
         </h1>
         <p className="hero-3 text-lg md:text-xl text-[#8B5E52] max-w-xl leading-relaxed mb-10">
-          ZanZan builds your personalized makeup routine in seconds — powered by AI, made for real people.
+          ZanZan builds your personalized makeup routine for any occasion — skip the tutorials, ditch the guesswork.
         </p>
         <div className="hero-4 flex flex-col sm:flex-row gap-4">
           <Link
