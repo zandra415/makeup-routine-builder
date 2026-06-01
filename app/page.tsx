@@ -13,8 +13,8 @@ const NAV_LINKS = [
 
 const STEPS = [
   { num: '01', icon: '🤳', title: 'Upload Your Face', desc: 'Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.' },
-  { num: '02', icon: '💄', title: 'Add Your Products', desc: 'Tell us what\'s in your makeup bag. Any brand, any shade — we work with what you already own.' },
-  { num: '03', icon: '✨', title: 'Get Your Routine', desc: 'Pick a look and receive a personalized step-by-step routine built just for your face.' },
+  { num: '02', icon: '🛍️', title: 'Add Your Products', desc: 'Tell us what\'s in your makeup bag. Any brand, any shade — we work with what you already own.' },
+  { num: '03', icon: '🪄', title: 'Get Your Routine', desc: 'Pick a look and receive a personalized step-by-step routine built just for your face.' },
 ]
 
 const FEATURES = [
@@ -257,27 +257,60 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Connecting line on desktop */}
-            <div className="hidden md:block absolute top-16 left-1/6 right-1/6 h-px bg-[#FFD4BC] z-0" style={{ left: '18%', right: '18%' }} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            {STEPS.map((step, i) => (
-              <div key={step.num}
-                className={`fade-up delay-${i + 1} relative bg-white rounded-3xl border border-[#FFD4BC] p-8 shadow-sm overflow-hidden`}>
-                {/* Number watermark */}
-                <div className="absolute -top-4 -right-2 text-8xl font-black text-[#FFD4BC] leading-none select-none pointer-events-none">
-                  {step.num}
-                </div>
-                <div className="relative z-10">
-                  <div className="text-4xl mb-5">{step.icon}</div>
-                  <h3 className="text-lg font-semibold text-[#1C0A00] mb-3"
-                    style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
-                    {step.title}
-                  </h3>
-                  <p className="text-[#8B5E52] text-sm leading-relaxed">{step.desc}</p>
+            {/* Card 1 — Upload Your Face */}
+            <div className="fade-up delay-1 relative bg-white rounded-3xl border border-[#FFD4BC] p-8 pb-8 shadow-sm overflow-hidden">
+              <div className="absolute -top-4 -right-2 text-6xl font-black text-[#FFD4BC] opacity-20 leading-none select-none pointer-events-none">01</div>
+              <div className="relative z-10">
+                <div className="text-4xl mb-5">🤳</div>
+                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                  Upload Your Face
+                </h3>
+                <p className="text-[#8B5E52] text-sm leading-relaxed">Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.</p>
+                <div className="mt-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] p-5 text-center cursor-pointer hover:bg-[#FFE8D6] transition-all">
+                  <div className="text-2xl">📸</div>
+                  <p className="text-xs text-[#8B5E52] mt-1">drop your selfie or tap to upload ✨</p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Card 2 — Add Your Products */}
+            <div className="fade-up delay-2 relative bg-white rounded-3xl border border-[#FFD4BC] p-8 pb-8 shadow-sm overflow-hidden">
+              <div className="absolute -top-4 -right-2 text-6xl font-black text-[#FFD4BC] opacity-20 leading-none select-none pointer-events-none">02</div>
+              <div className="relative z-10">
+                <div className="text-4xl mb-5">🛍️</div>
+                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                  Add Your Products
+                </h3>
+                <p className="text-[#8B5E52] text-sm leading-relaxed">Tell us what&apos;s in your makeup bag. Any brand, any shade — we work with what you already own.</p>
+                <input
+                  type="text"
+                  placeholder="e.g. Rare Beauty, NARS, e.l.f. 💄"
+                  className="w-full mt-4 px-4 py-2 text-sm rounded-full border border-[#FFAA80] bg-[#FFF5EE] text-[#1C0A00] outline-none focus:border-[#F4845F] focus:ring-2 focus:ring-[#FFAA80] placeholder-[#C4977E]"
+                />
+              </div>
+            </div>
+
+            {/* Card 3 — Get Your Routine */}
+            <div className="fade-up delay-3 relative bg-white rounded-3xl border border-[#FFD4BC] p-8 pb-8 shadow-sm overflow-hidden">
+              <div className="absolute -top-4 -right-2 text-6xl font-black text-[#FFD4BC] opacity-20 leading-none select-none pointer-events-none">03</div>
+              <div className="relative z-10">
+                <div className="text-4xl mb-5">🪄</div>
+                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                  Get Your Routine
+                </h3>
+                <p className="text-[#8B5E52] text-sm leading-relaxed">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {['everyday slay 🌸', 'date night 💋', 'no-makeup makeup ✨', 'festival ready 🌈'].map(pill => (
+                    <span key={pill} className="px-4 py-2 text-xs rounded-full border border-[#F4845F] bg-white text-[#F4845F] font-medium hover:bg-[#F4845F] hover:text-white cursor-pointer transition-all duration-200">
+                      {pill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
