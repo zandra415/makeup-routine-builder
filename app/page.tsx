@@ -42,46 +42,10 @@ const LOOKS = [
 
 const DELAY_CLASSES = ['delay-1', 'delay-2', 'delay-3', 'delay-4']
 
-const HEADLINE = 'Stop guessing. Start serving.'
-const WORDS = [
-  'Mascara','Foundation','Contour','Blush','Highlight','Concealer',
-  'Bronzer','Eyeliner','Lipstick','Primer','Setting Spray','Eyeshadow','Brow Gel','Gloss',
-]
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('Home')
   const [menuOpen, setMenuOpen] = useState(false)
-  const [displayText, setDisplayText] = useState('')
-  const [typingDone, setTypingDone] = useState(false)
-  const [ctaBounce, setCtaBounce] = useState(false)
-  const [wordIndex, setWordIndex] = useState(0)
-
-  // Typewriter effect
-  useEffect(() => {
-    const start = setTimeout(() => {
-      let i = 0
-      const tick = setInterval(() => {
-        i++
-        setDisplayText(HEADLINE.slice(0, i))
-        if (i >= HEADLINE.length) {
-          clearInterval(tick)
-          setTimeout(() => {
-            setTypingDone(true)
-            setTimeout(() => { setCtaBounce(true) }, 400)
-            setTimeout(() => { setCtaBounce(false) }, 3400)
-          }, 400)
-        }
-      }, 60)
-      return () => clearInterval(tick)
-    }, 800)
-    return () => clearTimeout(start)
-  }, [])
-
-  // Rotating background words
-  useEffect(() => {
-    const interval = setInterval(() => setWordIndex(i => (i + 1) % WORDS.length), 2000)
-    return () => clearInterval(interval)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -132,13 +96,6 @@ export default function LandingPage() {
         }
         .btn-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
 
-        @keyframes fadeWord {
-          0%   { opacity: 0; transform: scale(0.92); }
-          15%  { opacity: 1; transform: scale(1); }
-          80%  { opacity: 1; transform: scale(1); }
-          100% { opacity: 0; transform: scale(1.06); }
-        }
-        .word-cycle { animation: fadeWord 2s ease-in-out forwards; }
       `}</style>
 
       {/* ===== NAVBAR ===== */}
@@ -211,76 +168,56 @@ export default function LandingPage() {
       </nav>
 
       {/* ===== HERO ===== */}
-      <section className="min-h-screen bg-[#FFFAF5] relative flex flex-col items-center justify-center text-center px-4 py-24 overflow-hidden">
+      <section className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center text-center px-4 py-24">
 
-        {/* Warm radial spotlight */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 50%, rgba(255,232,214,0.85) 0%, transparent 70%)' }}
+        {/* Video background */}
+        <video
+          src="/startup_vid.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
-        {/* Rotating background word */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 select-none">
-          <span
-            key={wordIndex}
-            className="word-cycle text-8xl md:text-9xl font-bold text-[#FFD4BC] opacity-20"
-          >
-            {WORDS[wordIndex]}
-          </span>
-        </div>
+        {/* Dark warm overlay */}
+        <div className="absolute inset-0 bg-[#1C0A00] opacity-40" />
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center">
 
           {/* Label */}
           <p
-            className="text-xs font-semibold text-[#F4845F] tracking-widest uppercase mb-6"
-            style={{ animation: 'heroIn 0.8s ease 0.5s both' }}
+            className="text-xs font-semibold text-[#FFAA80] tracking-widest uppercase mb-6"
+            style={{ animation: 'heroIn 0.8s ease 0.3s both' }}
           >
             ✦ serve your look ✦
           </p>
 
-          {/* Typewriter headline */}
+          {/* Headline */}
           <h1
-            className="text-5xl md:text-7xl font-bold text-[#1C0A00] leading-tight max-w-3xl mb-8 min-h-[1.2em]"
+            className="hero-2 text-5xl md:text-7xl font-bold text-white leading-tight max-w-3xl mb-8"
             style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}
           >
-            {displayText}
-            {!typingDone && (
-              <span className="inline-block border-r-2 border-[#F4845F] animate-pulse ml-0.5">&nbsp;</span>
-            )}
+            Stop guessing.<br />Start serving.
           </h1>
 
-          {/* Subheadline — fades in after typing */}
-          <p
-            className="text-lg md:text-xl text-[#8B5E52] max-w-xl leading-relaxed mb-10"
-            style={{
-              opacity: typingDone ? 1 : 0,
-              transform: typingDone ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s',
-            }}
-          >
+          {/* Subheadline */}
+          <p className="hero-3 text-lg md:text-xl text-white opacity-80 max-w-xl leading-relaxed mb-10">
             ZanZan builds your personalized makeup routine for any occasion — skip the tutorials, ditch the guesswork.
           </p>
 
-          {/* CTA buttons — fade in after subheadline */}
-          <div
-            className="flex flex-col sm:flex-row gap-4"
-            style={{
-              opacity: typingDone ? 1 : 0,
-              transform: typingDone ? 'translateY(0)' : 'translateY(16px)',
-              transition: 'opacity 0.6s ease 0.45s, transform 0.6s ease 0.45s',
-            }}
-          >
+          {/* CTA buttons */}
+          <div className="hero-4 flex flex-col sm:flex-row gap-4">
             <Link
               href="/app"
-              className={`px-8 py-4 rounded-2xl bg-[#F4845F] text-white font-semibold text-base hover:opacity-90 transition-all shadow-md ${ctaBounce ? 'animate-bounce' : ''}`}
+              className="px-8 py-4 rounded-2xl bg-[#F4845F] text-white font-semibold text-base hover:opacity-90 transition-all shadow-md"
             >
               Build My Routine
             </Link>
             <a
               href="#features"
-              className="px-8 py-4 rounded-2xl border-2 border-[#FFD4BC] text-[#8B5E52] font-semibold text-base hover:bg-[#FFF0E8] transition-all"
+              className="px-8 py-4 rounded-2xl border-2 border-white/40 text-white font-semibold text-base hover:bg-white/10 transition-all"
             >
               See How It Works
             </a>
@@ -290,8 +227,8 @@ export default function LandingPage() {
         {/* Scroll indicator */}
         <div className="absolute bottom-8 flex flex-col items-center gap-1">
           <a href="#features" className="flex flex-col items-center gap-1 group">
-            <span className="text-xs text-[#8B5E52] group-hover:text-[#F4845F] transition-colors">scroll to explore</span>
-            <span className="text-[#F4845F] text-lg animate-bounce">↓</span>
+            <span className="text-xs text-white/60 group-hover:text-white transition-colors">scroll to explore</span>
+            <span className="text-white text-lg animate-bounce">↓</span>
           </a>
         </div>
 
