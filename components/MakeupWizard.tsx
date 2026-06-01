@@ -192,15 +192,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
 
   return (
     <div className="min-h-screen bg-[#FFF5F0] font-sans">
-      {/* ---- Header ---- */}
-      <header className="bg-gradient-to-r from-[#F4845F] to-[#FFAA80] border-b border-[#FFD4BC] px-6 py-4">
-        <h1 className="text-2xl font-semibold text-yellow-300 font-serif italic tracking-tight">
-          ZanZan
-        </h1>
-        <p className="text-yellow-100 text-sm mt-0.5">✦ serve your look ✦</p>
-      </header>
-
-      <main className="max-w-2xl mx-auto px-4 py-10">
+<main className="max-w-2xl mx-auto px-4 py-10">
 
         {/* ---- Progress Steps ---- */}
         <div className="flex items-center justify-between mb-10">
@@ -269,7 +261,13 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                     <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-xl mx-auto" />
                   ) : (
                     <>
-                      <div className="text-4xl mb-2">🤳</div>
+                      <div className="mb-2 flex justify-center">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="8" y="12" width="24" height="20" rx="3" stroke="#F4845F" strokeWidth="1.5"/>
+                          <circle cx="20" cy="22" r="5" stroke="#F4845F" strokeWidth="1.5"/>
+                          <path d="M15 12L17 8H23L25 12" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
+                        </svg>
+                      </div>
                       <p className="text-sm text-[#8B5E52]">Click to upload a selfie</p>
                       <p className="text-xs text-[#8B5E52]/60 mt-1">JPG, PNG or HEIC • Max 10MB</p>
                     </>
@@ -278,8 +276,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                 <button
                   onClick={handleNextFromStep1}
                   disabled={loading || !imageFile}
-                  className="mt-8 w-full bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold
-                             hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                  className="mt-8 w-full bg-[#F4845F] text-white py-3 rounded-xl font-semibold hover:bg-[#FFAA80] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
                   {loading ? 'Analyzing your face…' : 'Continue →'}
                 </button>
               </>

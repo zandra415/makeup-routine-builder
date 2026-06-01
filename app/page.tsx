@@ -421,34 +421,15 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="bg-[#1C0A00] px-6 py-14">
-        <div className="max-w-4xl mx-auto flex flex-col items-center gap-8">
-
-          {/* Logo */}
-          <img src="/zanzan-logo.svg" alt="ZanZan"
-            className="h-16 w-auto brightness-0 invert opacity-80" />
-
-          {/* Links */}
-          <div className="flex gap-8 text-xs text-[#FFAA80] tracking-widest uppercase"
-            style={{ fontFamily: 'var(--font-josefin)' }}>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
-            <a href="#" className="hover:text-white transition-colors">About</a>
-          </div>
-
-          {/* Social placeholders */}
-          <div className="flex gap-6 text-[#FFAA80]">
-            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="TikTok">TikTok</a>
-            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="Instagram">Instagram</a>
-            <a href="#" className="text-sm hover:text-white transition-colors" aria-label="Pinterest">Pinterest</a>
-          </div>
-
-          {/* Copyright */}
-          <p className="text-white/40 text-xs text-center">
-            © 2025 ZanZan Beauty Studio. All rights reserved.
-          </p>
+      <footer className="bg-[#FFF0E8] py-12 text-center border-t border-[#FFD4BC]">
+        <img src="/zanzan-logo.svg" alt="ZanZan" className="h-12 w-auto mx-auto mb-4" />
+        <p className="text-[#8B5E52] text-xs tracking-widest uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)' }}>✦ serve your look ✦</p>
+        <div className="flex justify-center gap-8 mb-6">
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>TikTok</a>
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>Instagram</a>
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>Pinterest</a>
         </div>
+        <p className="text-[#C4977E] text-xs">© 2025 ZanZan Beauty Studio. All rights reserved.</p>
       </footer>
     </>
   )

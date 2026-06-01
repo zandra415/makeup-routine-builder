@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import MakeupWizard from '@/components/MakeupWizard'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,7 +9,10 @@ import Image from 'next/image'
 export default function GlamLabPage() {
   const [userId, setUserId] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
-  const supabase = createClientComponentClient()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   useEffect(() => {
     const getUser = async () => {
@@ -76,9 +79,15 @@ export default function GlamLabPage() {
       </div>
 
       {/* FOOTER */}
-      <footer className="bg-[#1C0A00] py-10 text-center">
-        <Image src="/zanzan-logo.svg" alt="ZanZan" width={80} height={32} className="h-12 w-auto mx-auto mb-6 brightness-0 invert opacity-80" />
-        <p className="text-[#8B5E52] text-xs tracking-widest">© 2025 ZanZan Beauty Studio. All rights reserved.</p>
+      <footer className="bg-[#FFF0E8] py-12 text-center border-t border-[#FFD4BC]">
+        <Image src="/zanzan-logo.svg" alt="ZanZan" width={80} height={32} className="h-12 w-auto mx-auto mb-4" />
+        <p className="text-[#8B5E52] text-xs tracking-widest uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)' }}>✦ serve your look ✦</p>
+        <div className="flex justify-center gap-8 mb-6">
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>TikTok</a>
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>Instagram</a>
+          <a href="#" className="text-xs text-[#8B5E52] hover:text-[#F4845F] tracking-widest uppercase transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>Pinterest</a>
+        </div>
+        <p className="text-[#C4977E] text-xs">© 2025 ZanZan Beauty Studio. All rights reserved.</p>
       </footer>
 
     </div>
