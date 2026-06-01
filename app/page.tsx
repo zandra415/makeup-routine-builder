@@ -231,10 +231,13 @@ export default function LandingPage() {
             <span className="text-white text-xl animate-bounce">↓</span>
           </a>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, #FFFAF5)' }} />
       </section>
 
       {/* ===== TRENDING LOOKS ===== */}
-      <section id="looks" className="bg-[#FFFAF5] py-12">
+      <section id="looks" className="relative overflow-hidden bg-[#FFFAF5] py-12">
+        <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to top, transparent, #FFFAF5)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, #0A1A0F)' }} />
         <div className="fade-up text-center mb-12 px-4">
           <h2 className="text-4xl text-[#1C0A00]"
             style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
@@ -253,7 +256,9 @@ export default function LandingPage() {
       </section>
 
       {/* ===== HOW IT WORKS ===== */}
-      <section id="how-it-works" className="bg-[#FFFAF5] py-24 px-4">
+      <section id="how-it-works" className="relative overflow-hidden bg-[#FFFAF5] py-24 px-4">
+        <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to top, transparent, #0A1A0F)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, #FFFAF5)' }} />
         <div className="max-w-5xl mx-auto">
           <div className="fade-up text-center mb-16">
             <p className="text-xs text-[#8B5E52] uppercase mb-3" style={{ letterSpacing: '0.3em' }}>The Process</p>
@@ -352,6 +357,8 @@ export default function LandingPage() {
 
       {/* ===== FEATURES ===== */}
       <section id="features" className="relative overflow-hidden py-24 px-4" style={{ background: '#0A1A0F' }}>
+        <div className="absolute top-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to top, transparent, #FFFAF5)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, #FFFAF5)' }} />
         <div className="max-w-5xl mx-auto relative z-10">
 
           <div className="text-center mb-16">
@@ -413,7 +420,8 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FREE BETA CTA ===== */}
-      <section className="bg-[#FFFAF5] py-24 px-4">
+      <section className="relative overflow-hidden bg-[#FFFAF5] py-24 px-4">
+        <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to top, transparent, #FFFAF5)' }} />
         <div className="fade-up max-w-2xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-[#1C0A00] mb-4"
             style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
