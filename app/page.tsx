@@ -149,7 +149,7 @@ export default function LandingPage() {
           {/* Right: CTA */}
           <Link
             href="/app"
-            className="rounded-full px-5 py-2 text-sm font-medium transition-all hover:scale-105 border border-[#1C0A00] text-[#1C0A00]"
+            className="px-5 py-2 text-sm rounded-full bg-[#F4845F] text-white hover:bg-[#FFAA80] transition-colors duration-200"
           >
             Build My Look →
           </Link>
