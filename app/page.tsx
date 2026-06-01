@@ -34,6 +34,7 @@ export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [selectedLook, setSelectedLook] = useState<string | null>(null)
+  const [activeStep, setActiveStep] = useState(0)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -262,72 +263,87 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 items-stretch">
+          <div className="relative max-w-sm mx-auto">
 
-            {/* Card 1 — Upload Your Face */}
-            <div className="fade-up delay-1 self-stretch relative bg-[#FFF0E8] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
-              <div className="relative z-10">
-                <div className="mb-5">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="18" stroke="#F4845F" strokeWidth="1.5"/>
-                    <line x1="20" y1="11" x2="20" y2="29" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
-                    <line x1="11" y1="20" x2="29" y2="20" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+            {/* Cards wrapper */}
+            <div className="overflow-hidden rounded-3xl">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${activeStep * 100}%)` }}
+              >
+
+                {/* Card 1 */}
+                <div className="flex-shrink-0 w-full bg-[#FFF0E8] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
+                  <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
+                  <div className="relative z-10">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><circle cx="20" cy="20" r="18" stroke="#F4845F" strokeWidth="1.5"/><line x1="20" y1="12" x2="20" y2="28" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/><line x1="12" y1="20" x2="28" y2="20" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300', letterSpacing: '0.05em' }}>Upload Your Face</h3>
+                    <p className="text-sm text-[#8B5E52] leading-relaxed mb-6">Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.</p>
+                    <div className="rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] p-5 text-center cursor-pointer hover:bg-[#FFE8D6] transition-all">
+                      <p className="text-xs text-[#8B5E52]">drop your selfie or tap to upload ✨</p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-                  Upload Your Face
-                </h3>
-                <p className="text-[#8B5E52] text-sm leading-relaxed">Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.</p>
-                <div className="mt-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] p-5 text-center cursor-pointer hover:bg-[#FFE8D6] transition-all">
-                  <p className="text-xs text-[#8B5E52]">drop your selfie or tap to upload</p>
+
+                {/* Card 2 */}
+                <div className="flex-shrink-0 w-full bg-[#FFE8D6] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
+                  <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>02</span>
+                  <div className="relative z-10">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><rect x="8" y="8" width="24" height="28" rx="3" stroke="#F4845F" strokeWidth="1.5"/><line x1="14" y1="16" x2="26" y2="16" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/><line x1="14" y1="22" x2="22" y2="22" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300', letterSpacing: '0.05em' }}>Add Your Products</h3>
+                    <p className="text-sm text-[#8B5E52] leading-relaxed mb-6">Tell us what is in your makeup bag. Any brand, any shade — we work with what you already own.</p>
+                    <input
+                      type="text"
+                      placeholder="e.g. Rare Beauty, NARS, e.l.f."
+                      className="w-full px-4 py-3 text-sm rounded-full border border-[#FFAA80] bg-[#FFF5EE] text-[#1C0A00] outline-none focus:border-[#F4845F] placeholder-[#C4977E]"
+                    />
+                  </div>
                 </div>
+
+                {/* Card 3 */}
+                <div className="flex-shrink-0 w-full bg-[#F4845F] rounded-3xl p-8 relative overflow-hidden" style={{ minHeight: '380px' }}>
+                  <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
+                  <div className="relative z-10">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><path d="M20 8 L24 16 L34 16 L26 22 L30 32 L20 26 L10 32 L14 22 L6 16 L16 16 Z" stroke="white" strokeWidth="1.5" fill="none" strokeLinejoin="round"/></svg>
+                    <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300', letterSpacing: '0.05em' }}>Get Your Routine</h3>
+                    <p className="text-sm text-white opacity-90 leading-relaxed mb-6">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
+                    <div className="flex flex-wrap gap-2">
+                      {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map((look) => (
+                        <span key={look} className="px-4 py-2 text-xs rounded-full border border-white bg-transparent text-white hover:bg-white hover:text-[#F4845F] cursor-pointer transition-all duration-200">
+                          {look}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            {/* Card 2 — Add Your Products */}
-            <div className="fade-up delay-2 self-stretch relative bg-[#FFE8D6] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>02</span>
-              <div className="relative z-10">
-                <div className="mb-5">
-                  <Barcode size={40} color="#C7522A" weight="light" />
-                </div>
-                <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-                  Add Your Products
-                </h3>
-                <p className="text-[#8B5E52] text-sm leading-relaxed">Tell us what&apos;s in your makeup bag. Any brand, any shade — we work with what you already own.</p>
-                <input
-                  type="text"
-                  placeholder="e.g. Rare Beauty, NARS, e.l.f."
-                  className="w-full mt-4 px-4 py-2 text-sm rounded-full border border-[#FFAA80] bg-[#FFF5EE] text-[#1C0A00] outline-none focus:border-[#F4845F] focus:ring-2 focus:ring-[#FFAA80] placeholder-[#C4977E]"
-                />
-              </div>
-            </div>
+            {/* Arrow controls */}
+            <div className="flex items-center justify-between mt-6">
+              <button
+                onClick={() => setActiveStep(prev => Math.max(0, prev - 1))}
+                disabled={activeStep === 0}
+                className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30"
+              >←</button>
 
-            {/* Card 3 — Get Your Routine */}
-            <div className="fade-up delay-3 self-stretch relative bg-[#F4845F] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
-              <div className="relative z-10">
-                <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-                  Get Your Routine
-                </h3>
-                <p className="text-white opacity-90 text-sm leading-relaxed">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map(look => (
-                    <button
-                      key={look}
-                      onClick={() => setSelectedLook(look === selectedLook ? null : look)}
-                      className={`px-4 py-2 text-xs rounded-full border transition-all duration-200 ${
-                        selectedLook === look
-                          ? 'bg-white text-[#F4845F] border-white'
-                          : 'bg-transparent text-white border-white hover:bg-white hover:text-[#F4845F]'
-                      }`}
-                    >
-                      {look}
-                    </button>
-                  ))}
-                </div>
+              {/* Dots */}
+              <div className="flex gap-2">
+                {[0, 1, 2].map(i => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveStep(i)}
+                    className={`transition-all duration-300 rounded-full ${activeStep === i ? 'w-6 h-2 bg-[#F4845F]' : 'w-2 h-2 bg-[#FFD4BC]'}`}
+                  />
+                ))}
               </div>
+
+              <button
+                onClick={() => setActiveStep(prev => Math.min(2, prev + 1))}
+                disabled={activeStep === 2}
+                className="w-10 h-10 rounded-full border border-[#FFD4BC] bg-white flex items-center justify-center text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F] transition-all disabled:opacity-30"
+              >→</button>
             </div>
 
           </div>
