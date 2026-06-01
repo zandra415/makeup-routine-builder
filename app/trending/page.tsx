@@ -25,13 +25,49 @@ const TRENDING_LOOKS = [
 
 const CATEGORIES = ['All', 'Everyday', 'Evening', 'Date Night', 'Festival']
 
+const LOOK_OF_THE_WEEK = {
+  name: 'Glazed Skin',
+  category: 'Everyday',
+  description: 'This week everyone is obsessing over the glass skin effect. Dewy, luminous, and impossibly fresh — this is the look taking over every For You page right now.',
+  creator: '@zanzan.beauty',
+  tags: ['dewy', 'glass', 'skincare', 'minimal'],
+  heat: 99
+}
+
 export default function TrendingPage() {
   const [activeCategory, setActiveCategory] = useState('All')
   const [hoveredRank, setHoveredRank] = useState<number | null>(null)
   const [updatedAt, setUpdatedAt] = useState('')
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
     setUpdatedAt(new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }))
+  }, [])
+
+  useEffect(() => {
+    const getNextMonday = () => {
+      const now = new Date()
+      const day = now.getDay()
+      const daysUntilMonday = day === 0 ? 1 : 8 - day
+      const nextMonday = new Date(now)
+      nextMonday.setDate(now.getDate() + daysUntilMonday)
+      nextMonday.setHours(0, 0, 0, 0)
+      return nextMonday
+    }
+
+    const timer = setInterval(() => {
+      const now = new Date()
+      const target = getNextMonday()
+      const diff = target.getTime() - now.getTime()
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000)
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
   }, [])
 
   const filtered = activeCategory === 'All'
@@ -98,6 +134,77 @@ export default function TrendingPage() {
               {cat}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* LOOK OF THE WEEK */}
+      <div className="max-w-4xl mx-auto px-4 mb-10">
+        <div className="relative rounded-3xl overflow-hidden bg-[#1C0A00] p-8 md:p-12">
+
+          {/* Background watermark */}
+          <span className="absolute -right-8 -bottom-8 text-[12rem] font-bold text-white/5 leading-none select-none pointer-events-none" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
+
+          {/* Top label */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-[#F4845F] animate-pulse" />
+              <p className="text-xs tracking-[0.3em] uppercase text-[#F4845F]" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Look of the Week</p>
+            </div>
+            <span className="text-xs px-3 py-1 rounded-full bg-[#F4845F]/20 text-[#FFAA80]" style={{ fontFamily: 'var(--font-josefin)' }}>
+              {LOOK_OF_THE_WEEK.heat}% heat
+            </span>
+          </div>
+
+          {/* Look name */}
+          <h2 className="text-5xl text-white mb-3" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>
+            {LOOK_OF_THE_WEEK.name}
+          </h2>
+          <p className="text-xs text-[#FFAA80] mb-4 tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)' }}>
+            {LOOK_OF_THE_WEEK.category} · Curated by {LOOK_OF_THE_WEEK.creator}
+          </p>
+          <p className="text-[#C4977E] text-sm leading-relaxed mb-8 max-w-xl">
+            {LOOK_OF_THE_WEEK.description}
+          </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {LOOK_OF_THE_WEEK.tags.map(tag => (
+              <span key={tag} className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/70">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Countdown + CTA */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <Link
+              href={`/glam-lab?look=${encodeURIComponent(LOOK_OF_THE_WEEK.name)}`}
+              className="px-8 py-3 rounded-full bg-[#F4845F] text-white text-xs tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-200"
+              style={{ fontFamily: 'var(--font-josefin)' }}
+            >
+              Build This Look →
+            </Link>
+            <div>
+              <p className="text-[10px] text-[#8B5E52] tracking-widest uppercase mb-2" style={{ fontFamily: 'var(--font-josefin)' }}>Next drop in</p>
+              <div className="flex items-center gap-3">
+                {[
+                  { value: timeLeft.days, label: 'days' },
+                  { value: timeLeft.hours, label: 'hrs' },
+                  { value: timeLeft.minutes, label: 'min' },
+                  { value: timeLeft.seconds, label: 'sec' }
+                ].map((unit, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-xl font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
+                      {String(unit.value).padStart(2, '0')}
+                    </div>
+                    <div className="text-[9px] text-[#8B5E52] uppercase tracking-widest" style={{ fontFamily: 'var(--font-josefin)' }}>
+                      {unit.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
