@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Barcode, Scan, ShoppingBag, Palette, ListChecks } from '@phosphor-icons/react'
 
 const NAV_LINKS = [
   { name: 'Home',      href: '/' },
@@ -32,6 +33,7 @@ export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('Home')
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [selectedLook, setSelectedLook] = useState<string | null>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -250,28 +252,26 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="fade-up text-center mb-16">
             <p className="text-xs text-[#8B5E52] uppercase mb-3" style={{ letterSpacing: '0.3em' }}>The Process</p>
-            <h2 className="text-5xl font-bold italic text-[#F4845F]"
-              style={{ fontFamily: 'var(--font-syne)' }}>
-              three steps to your ✦ look
+            <h2 className="text-6xl text-[#F4845F]"
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400', letterSpacing: '-0.01em' }}>
+              Three Steps to Your Look
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 gap-6 items-stretch">
 
             {/* Card 1 — Upload Your Face */}
-            <div className="fade-up delay-1 relative bg-white rounded-3xl p-8 pb-8 overflow-hidden"
-              style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.08)' }}>
-              <div className="absolute -top-3 -right-1 text-5xl font-black text-[#F4845F] opacity-40 leading-none select-none pointer-events-none"
-                style={{ fontFamily: 'var(--font-syne)' }}>01</div>
+            <div className="fade-up delay-1 self-stretch relative bg-[#FFF0E8] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
+              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
               <div className="relative z-10">
                 <div className="mb-5">
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="18" stroke="#F4845F" strokeWidth="2"/>
-                    <line x1="20" y1="11" x2="20" y2="29" stroke="#F4845F" strokeWidth="2" strokeLinecap="round"/>
-                    <line x1="11" y1="20" x2="29" y2="20" stroke="#F4845F" strokeWidth="2" strokeLinecap="round"/>
+                    <circle cx="20" cy="20" r="18" stroke="#F4845F" strokeWidth="1.5"/>
+                    <line x1="20" y1="11" x2="20" y2="29" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
+                    <line x1="11" y1="20" x2="29" y2="20" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
                   Upload Your Face
                 </h3>
                 <p className="text-[#8B5E52] text-sm leading-relaxed">Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.</p>
@@ -282,18 +282,13 @@ export default function LandingPage() {
             </div>
 
             {/* Card 2 — Add Your Products */}
-            <div className="fade-up delay-2 relative bg-white rounded-3xl p-8 pb-8 overflow-hidden"
-              style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.08)' }}>
-              <div className="absolute -top-3 -right-1 text-5xl font-black text-[#F4845F] opacity-40 leading-none select-none pointer-events-none"
-                style={{ fontFamily: 'var(--font-syne)' }}>02</div>
+            <div className="fade-up delay-2 self-stretch relative bg-[#FFE8D6] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
+              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-[#C7522A] opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>02</span>
               <div className="relative z-10">
                 <div className="mb-5">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 16h14l-2 14H15L13 16z" stroke="#F4845F" strokeWidth="2" strokeLinejoin="round"/>
-                    <path d="M16 16c0-4 8-4 8 0" stroke="#F4845F" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
+                  <Barcode size={40} color="#C7522A" weight="light" />
                 </div>
-                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                <h3 className="text-xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
                   Add Your Products
                 </h3>
                 <p className="text-[#8B5E52] text-sm leading-relaxed">Tell us what&apos;s in your makeup bag. Any brand, any shade — we work with what you already own.</p>
@@ -306,25 +301,26 @@ export default function LandingPage() {
             </div>
 
             {/* Card 3 — Get Your Routine */}
-            <div className="fade-up delay-3 relative bg-white rounded-3xl p-8 pb-8 overflow-hidden"
-              style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.08)' }}>
-              <div className="absolute -top-3 -right-1 text-5xl font-black text-[#F4845F] opacity-40 leading-none select-none pointer-events-none"
-                style={{ fontFamily: 'var(--font-syne)' }}>03</div>
+            <div className="fade-up delay-3 self-stretch relative bg-[#F4845F] rounded-3xl p-8 pb-8 overflow-hidden hover:-translate-y-2 transition-all duration-300">
+              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white opacity-10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
               <div className="relative z-10">
-                <div className="mb-5">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 6l2.5 8H30l-6.2 4.5 2.4 7.5L20 21l-6.2 5 2.4-7.5L10 14h7.5z" stroke="#F4845F" strokeWidth="2" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-[#1C0A00] mb-3" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                <h3 className="text-xl text-white mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
                   Get Your Routine
                 </h3>
-                <p className="text-[#8B5E52] text-sm leading-relaxed">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
+                <p className="text-white opacity-90 text-sm leading-relaxed">Pick a look and receive a personalized step-by-step routine built just for your face.</p>
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map(pill => (
-                    <span key={pill} className="px-4 py-2 text-xs rounded-full border border-[#F4845F] bg-white text-[#F4845F] font-medium hover:bg-[#F4845F] hover:text-white cursor-pointer transition-all duration-200">
-                      {pill}
-                    </span>
+                  {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map(look => (
+                    <button
+                      key={look}
+                      onClick={() => setSelectedLook(look === selectedLook ? null : look)}
+                      className={`px-4 py-2 text-xs rounded-full border transition-all duration-200 ${
+                        selectedLook === look
+                          ? 'bg-white text-[#F4845F] border-white'
+                          : 'bg-transparent text-white border-white hover:bg-white hover:text-[#F4845F]'
+                      }`}
+                    >
+                      {look}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -335,7 +331,7 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FEATURES ===== */}
-      <section id="features" className="relative overflow-hidden bg-[#FFFAF5] py-24 px-4">
+      <section id="features" className="relative overflow-hidden bg-[#FFFAF5] py-12 px-4">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img src="/zanzan-logo.svg" alt="" aria-hidden="true" className="w-[600px] opacity-5 select-none" />
         </div>
@@ -343,35 +339,42 @@ export default function LandingPage() {
           <div className="fade-up text-center mb-14">
             <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
               style={{ fontFamily: 'var(--font-josefin)' }}>✦ Why ZanZan</p>
-            <h2 className="text-4xl font-bold text-[#1C0A00]"
-              style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+            <h2 className="text-5xl text-[#F4845F]"
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
               Built different
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {FEATURES.map((f, i) => (
-              <div key={f.title}
-                className={`fade-up delay-${i % 3 + 1} bg-white rounded-3xl border border-[#FFD4BC] p-8 hover:shadow-md hover:-translate-y-1 transition-all duration-300`}>
-                <div className="text-5xl mb-5">{f.icon}</div>
-                <h3 className="text-lg font-semibold text-[#1C0A00] mb-2"
-                  style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
-                  {f.title}
-                </h3>
-                <p className="text-[#8B5E52] text-sm leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
+            {FEATURES.map((f, i) => {
+              const icons = [
+                <Scan size={36} color="#F4845F" weight="light" />,
+                <ShoppingBag size={36} color="#F4845F" weight="light" />,
+                <Palette size={36} color="#F4845F" weight="light" />,
+                <ListChecks size={36} color="#F4845F" weight="light" />,
+              ]
+              return (
+                <div key={f.title}
+                  className={`fade-up delay-${i % 3 + 1} bg-white rounded-3xl border border-[#FFD4BC] p-8 hover:-translate-y-1 transition-all duration-300`}
+                  style={{ boxShadow: '0 2px 20px rgba(244,132,95,0.08)' }}>
+                  <div className="mb-5">{icons[i]}</div>
+                  <h3 className="text-lg font-semibold text-[#1C0A00] mb-2"
+                    style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
+                    {f.title}
+                  </h3>
+                  <p className="text-[#8B5E52] text-sm leading-relaxed">{f.desc}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* ===== TRENDING LOOKS ===== */}
-      <section id="looks" className="bg-[#FFFAF5] py-24 overflow-hidden">
+      <section id="looks" className="bg-[#FFFAF5] py-12 overflow-hidden">
         <div className="fade-up text-center mb-12 px-4">
-          <p className="text-xs font-medium text-[#F4845F] tracking-widest uppercase mb-3"
-            style={{ fontFamily: 'var(--font-josefin)' }}>✦ What's Hot</p>
-          <h2 className="text-4xl font-bold text-[#1C0A00]"
-            style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
-            What's trending right now 🔥
+          <h2 className="text-4xl text-[#1C0A00]"
+            style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
+            What's Trending Right Now ✦
           </h2>
         </div>
 
@@ -411,7 +414,7 @@ export default function LandingPage() {
             ZanZan is completely free right now. No credit card. No catch. Just your best look.
           </p>
           <Link href="/app"
-            className="inline-block bg-[#F4845F] text-white text-base font-semibold px-10 py-4 rounded-2xl hover:scale-105 hover:opacity-95 transition-all shadow-md">
+            className="px-10 py-4 rounded-full bg-[#F4845F] text-white text-sm font-medium tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-300 hover:-translate-y-1">
             Build My Routine →
           </Link>
         </div>
