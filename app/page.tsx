@@ -115,13 +115,13 @@ export default function LandingPage() {
 
           {/* Left: desktop nav links */}
           <div className="flex items-center">
-            <div className="hidden md:flex items-center gap-10">
+            <div className="hidden md:flex items-center gap-5">
               {NAV_LINKS.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setActiveTab(link.name)}
-                  className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-widest uppercase transition-all ${
+                  className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-wider uppercase transition-all ${
                     activeTab === link.name
                       ? scrolled ? 'text-[#F4845F] border-b-2 border-[#F4845F]' : 'text-white border-b-2 border-white'
                       : scrolled ? 'text-[#8B5E52] hover:text-[#F4845F]' : 'text-white/80 hover:text-white'
@@ -143,7 +143,7 @@ export default function LandingPage() {
 
           {/* Center: logo */}
           <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
-            <img src="/zanzan-logo.svg" alt="ZanZan" className="h-16 w-auto opacity-100" />
+            <img src="/zanzan-logo.svg" alt="ZanZan" className="h-20 w-auto" />
           </div>
 
           {/* Right: CTA */}
