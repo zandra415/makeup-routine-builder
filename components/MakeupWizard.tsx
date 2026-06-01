@@ -58,6 +58,10 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const [avatarData, setAvatarData] = useState<Partial<FaceAnalysis> | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>('')
+  const [selfieFile, setSelfieFile] = useState<File | null>(null)
+  const [selfiePreview, setSelfiePreview] = useState<string | null>(null)
+  const [showCamera, setShowCamera] = useState(false)
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
   const [manualTraits, setManualTraits] = useState<Partial<FaceAnalysis>>({})
   const [products, setProducts] = useState<string[]>([''])
   const [desiredLook, setDesiredLook] = useState('')
@@ -70,6 +74,8 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const [emailSaved, setEmailSaved] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -102,14 +108,61 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
     setProducts(products.filter((_, i) => i !== index))
   }
 
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: 1280, height: 720 }
+      })
+      setCameraStream(stream)
+      setShowCamera(true)
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream
+          videoRef.current.play()
+        }
+      }, 100)
+    } catch (err) {
+      console.error('Camera error:', err)
+      alert('Could not access camera. Please allow camera permissions and try again.')
+    }
+  }
+
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop())
+      setCameraStream(null)
+    }
+    setShowCamera(false)
+  }
+
+  const capturePhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    ctx.scale(-1, 1)
+    ctx.drawImage(video, -canvas.width, 0)
+    canvas.toBlob((blob) => {
+      if (!blob) return
+      const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' })
+      const dataUrl = canvas.toDataURL('image/jpeg')
+      setSelfiePreview(dataUrl)
+      setSelfieFile(file)
+      stopCamera()
+    }, 'image/jpeg', 0.9)
+  }
+
   const handleNextFromStep1 = async () => {
     setLoading(true)
     setError('')
     try {
       let body: Record<string, unknown>
 
-      if (inputMode === 'upload' && imageFile) {
-        const imageBase64 = await fileToBase64(imageFile)
+      if (inputMode === 'upload' && selfieFile) {
+        const imageBase64 = await fileToBase64(selfieFile)
         body = { imageBase64 }
       } else {
         body = { manualTraits }
@@ -282,36 +335,85 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
 
             {inputMode === 'upload' ? (
               <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all
-                    ${imagePreview ? 'border-[#F4845F] bg-[#FFF0E8]' : 'border-[#FFD4BC] hover:border-[#F4845F] hover:bg-[#FFF0E8]'}`}>
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-xl mx-auto" />
-                  ) : (
-                    <>
-                      <div className="mb-2 flex justify-center">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="8" y="12" width="24" height="20" rx="3" stroke="#F4845F" strokeWidth="1.5"/>
-                          <circle cx="20" cy="22" r="5" stroke="#F4845F" strokeWidth="1.5"/>
-                          <path d="M15 12L17 8H23L25 12" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round"/>
-                        </svg>
+                {!showCamera ? (
+                  <div className="space-y-4">
+                    {selfiePreview ? (
+                      <div className="relative">
+                        <img src={selfiePreview} alt="Your selfie" className="w-full max-w-sm mx-auto rounded-2xl object-cover aspect-square" />
+                        <button
+                          onClick={() => { setSelfiePreview(null); setSelfieFile(null) }}
+                          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 text-[#1C0A00] text-sm flex items-center justify-center hover:bg-white transition-all"
+                        >✕</button>
                       </div>
-                      <p className="text-sm text-[#8B5E52]">Click to upload a selfie</p>
-                      <p className="text-xs text-[#8B5E52]/60 mt-1">JPG, PNG or HEIC • Max 10MB</p>
-                    </>
-                  )}
-                </div>
+                    ) : (
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button
+                          onClick={startCamera}
+                          className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] hover:bg-[#FFE8D6] transition-all cursor-pointer text-[#F4845F] text-sm font-medium"
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                          </svg>
+                          Take a Selfie
+                        </button>
+                        <label className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFD4BC] bg-[#FFFAF5] hover:bg-[#FFF0E8] transition-all cursor-pointer text-[#8B5E52] text-sm font-medium">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                          </svg>
+                          Upload Photo
+                          <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (!file) return
+                            setSelfieFile(file)
+                            const reader = new FileReader()
+                            reader.onload = (ev) => setSelfiePreview(ev.target?.result as string)
+                            reader.readAsDataURL(file)
+                          }} />
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="relative max-w-sm mx-auto">
+                    <video
+                      ref={videoRef}
+                      className="w-full rounded-2xl"
+                      style={{ transform: 'scaleX(-1)' }}
+                      autoPlay
+                      playsInline
+                      muted
+                    />
+                    <canvas ref={canvasRef} className="hidden" />
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+                      <button
+                        onClick={stopCamera}
+                        className="px-5 py-2 rounded-full bg-white/80 text-[#1C0A00] text-sm font-medium hover:bg-white transition-all"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={capturePhoto}
+                        className="w-14 h-14 rounded-full bg-[#F4845F] border-4 border-white text-white flex items-center justify-center hover:bg-[#FFAA80] transition-all shadow-lg"
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                          <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="absolute top-4 left-0 right-0 flex justify-center">
+                      <div className="px-4 py-2 rounded-full bg-black/30 text-white text-xs">
+                        Position your face in the center ✦
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <button
                   onClick={handleNextFromStep1}
-                  disabled={loading || !imageFile}
+                  disabled={loading || !selfieFile}
                   className="mt-8 w-full bg-[#F4845F] text-white py-3 rounded-xl font-semibold hover:bg-[#FFAA80] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
                   {loading ? 'Analyzing your face…' : 'Continue →'}
                 </button>
