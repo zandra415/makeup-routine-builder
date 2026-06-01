@@ -312,6 +312,18 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
     }
   }
 
+  const getAffiliateLink = (product: string): string => {
+    const encoded = encodeURIComponent(product)
+    const sephoraBase = 'https://www.sephora.com/search?keyword='
+    const ultaBase = 'https://www.ulta.com/search?searchTerm='
+
+    const ultaBrands = ['elf', 'e.l.f', 'nyx', 'colourpop', 'wet n wild', 'milani', 'la girl', 'essence']
+    const isUlta = ultaBrands.some(brand => product.toLowerCase().includes(brand))
+
+    const baseUrl = isUlta ? ultaBase : sephoraBase
+    return `${baseUrl}${encoded}&utm_source=zanzan&utm_medium=affiliate&utm_campaign=routine`
+  }
+
   return (
     <div className="min-h-screen bg-[#FFF5F0] font-sans">
 <main className="max-w-2xl mx-auto px-4 py-10">
@@ -598,7 +610,24 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-[#1C0A00] mb-1">{step.title}</h3>
-                      <p className="text-xs font-medium text-[#F4845F] mb-3">🎨 {step.product}</p>
+                      <div className="flex items-center gap-2 mb-3 flex-wrap">
+                        <a
+                          href={getAffiliateLink(step.product)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-medium text-[#F4845F] hover:text-[#C7522A] hover:underline transition-colors duration-200 flex items-center gap-1"
+                        >
+                          {step.product}
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                          </svg>
+                        </a>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FFF0E8] text-[#C4977E] border border-[#FFD4BC]" style={{ fontFamily: 'var(--font-josefin)' }}>
+                          Shop →
+                        </span>
+                      </div>
 
                       <div className="space-y-2 text-sm">
                         <div>
@@ -619,6 +648,10 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                 </div>
               ))}
             </div>
+
+            <p className="text-[10px] text-[#C4977E] text-center mb-4" style={{ fontFamily: 'var(--font-josefin)' }}>
+              ✦ Product links may earn ZanZan a small commission at no cost to you
+            </p>
 
             {routine.finishingNotes && (
               <div className="bg-[#FFF0E8] rounded-2xl border border-[#FFD4BC] p-6 mb-6">
