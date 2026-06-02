@@ -176,11 +176,11 @@ export default function LandingPage() {
 
             <div
               className="rounded-2xl shadow-sm relative overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2"
-              style={{ minHeight: '420px', background: hoveredStep === 0 ? '#C7522A' : '#F4845F', boxShadow: hoveredStep === 0 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
+              style={{ minHeight: '420px', background: hoveredStep === 0 ? '#C7522A' : '#FFB899', boxShadow: hoveredStep === 0 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
               onMouseEnter={() => setHoveredStep(0)}
               onMouseLeave={() => setHoveredStep(null)}
             >
-              <div className="h-3 rounded-t-2xl bg-[#F4845F]" />
+              <div className="h-3 rounded-t-2xl bg-[#FFB899]" />
               <div className="p-8 relative overflow-hidden">
                 <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none transition-colors duration-500" style={{ fontFamily: 'var(--font-syne)', color: 'rgba(255,255,255,0.1)' }}>01</span>
                 <div className="relative z-10 h-full flex flex-col">
@@ -240,11 +240,11 @@ export default function LandingPage() {
 
             <div
               className="rounded-2xl shadow-sm relative overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2"
-              style={{ minHeight: '420px', background: hoveredStep === 2 ? '#C7522A' : '#F4845F', boxShadow: hoveredStep === 2 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
+              style={{ minHeight: '420px', background: hoveredStep === 2 ? '#A03D1A' : '#C7522A', boxShadow: hoveredStep === 2 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
               onMouseEnter={() => setHoveredStep(2)}
               onMouseLeave={() => setHoveredStep(null)}
             >
-              <div className="h-3 rounded-t-2xl bg-[#F4845F]" />
+              <div className="h-3 rounded-t-2xl bg-[#C7522A]" />
               <div className="p-8 relative overflow-hidden">
                 <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white/10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
                 <div className="relative z-10 h-full flex flex-col">
@@ -290,18 +290,18 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Face Analysis</p>
-              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Your face. Read instantly.</p>
-              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Drop a selfie and let our AI do the work. It reads your face shape, skin tone, undertone and eye shape in seconds and builds everything around what it finds. Prefer privacy? Build your avatar instead and we will work with that.</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Drop a selfie and let AI do the work.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Showing results from face reads in seconds. Undertones, face shape, complexions, skin tone. Then builds a full personalized look for whatever the day calls for.</p>
             </div>
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Your Products</p>
-              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What you own. Not what to buy.</p>
-              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Tell us what you own. Any brand, any shade. We build around your collection, not a shopping list.</p>
+              <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Your products. Perfected.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Show us what you own, we'll show you what look to make. Any brand, any shade. We build around your collection.</p>
             </div>
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Trending Looks</p>
               <p className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>What is hot. Right now.</p>
-              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Clean Girl. Mob Wife. Latte Makeup. We pull what is trending and make it work for your face specifically.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#6A9070' }}>Clean Girl. Mob Wife. Going Out Looks. We pull what is trending and make it work for your face specifically.</p>
             </div>
             <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
               <p className="text-xs tracking-[0.2em] uppercase mb-4" style={{ fontFamily: 'var(--font-josefin)', color: '#6A9070' }}>Personalized Steps</p>
