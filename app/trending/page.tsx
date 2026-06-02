@@ -121,7 +121,7 @@ export default function TrendingPage() {
       </nav>
 
       {/* HERO */}
-      <div className="pt-16 pb-12 text-center px-4 relative overflow-hidden">
+      <div className="pt-16 text-center px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#FFAA80] opacity-10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#F4845F] opacity-10 blur-3xl pointer-events-none" />
         <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Live Rankings ✦</p>
@@ -155,8 +155,7 @@ export default function TrendingPage() {
       </div>
 
       {/* LOOK OF THE WEEK */}
-      <div className="max-w-4xl mx-auto px-4 mb-10">
-        <div className="relative rounded-3xl overflow-hidden bg-[#1C0A00] p-8 md:p-12">
+      <div className="relative rounded-none overflow-hidden bg-[#0A1A0F] p-8 md:p-12">
 
           {/* Background watermark */}
           <span className="absolute -right-8 -bottom-8 text-[12rem] font-bold text-white/5 leading-none select-none pointer-events-none" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
@@ -223,7 +222,6 @@ export default function TrendingPage() {
             </div>
           </div>
         </div>
-      </div>
 
       {/* SHOP THE MOMENT */}
       <div className="max-w-4xl mx-auto px-4 mb-10">
@@ -438,6 +436,12 @@ export default function TrendingPage() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#E60023"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
           </a>
         </div>
+        <p className="text-xs text-[#8B5E52] mb-4">
+          Are you a brand?{' '}
+          <a href="/brands" className="text-[#F4845F] underline hover:text-[#C7522A] transition-colors" style={{ fontFamily: 'var(--font-josefin)' }}>
+            Partner with ZanZan →
+          </a>
+        </p>
         <p className="text-[#C4977E] text-xs">© 2026 ZanZan Beauty Studio. All rights reserved.</p>
       </footer>
 
