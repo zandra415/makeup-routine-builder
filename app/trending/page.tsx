@@ -120,40 +120,6 @@ export default function TrendingPage() {
         </a>
       </nav>
 
-      {/* HERO */}
-      <div className="pt-16 text-center px-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#FFAA80] opacity-10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#F4845F] opacity-10 blur-3xl pointer-events-none" />
-        <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Live Rankings ✦</p>
-        <h1 className="text-6xl text-[#1C0A00] mb-4" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
-          The Hot List
-        </h1>
-        <p className="text-[#8B5E52] text-sm max-w-md mx-auto leading-relaxed mb-2">
-          The looks taking over TikTok, Pinterest and Instagram right now — ranked by heat.
-        </p>
-        <p className="text-xs text-[#C4977E] mb-8" style={{ fontFamily: 'var(--font-josefin)' }}>
-          Updated {updatedAt} ✦
-        </p>
-
-        {/* CATEGORY FILTERS */}
-        <div className="flex flex-wrap justify-center gap-3">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-xs tracking-widest uppercase transition-all duration-200 ${
-                activeCategory === cat
-                  ? 'bg-[#F4845F] text-white'
-                  : 'bg-white border border-[#FFD4BC] text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F]'
-              }`}
-              style={{ fontFamily: 'var(--font-josefin)' }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* LOOK OF THE WEEK */}
       <div className="relative rounded-none overflow-hidden bg-[#0A1A0F] p-8 md:p-12">
 
@@ -222,6 +188,40 @@ export default function TrendingPage() {
             </div>
           </div>
         </div>
+
+      {/* HERO */}
+      <div className="pt-16 text-center px-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#FFAA80] opacity-10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#F4845F] opacity-10 blur-3xl pointer-events-none" />
+        <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Live Rankings ✦</p>
+        <h1 className="text-6xl text-[#1C0A00] mb-4" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
+          The Hot List
+        </h1>
+        <p className="text-[#8B5E52] text-sm max-w-md mx-auto leading-relaxed mb-2">
+          The looks taking over TikTok, Pinterest and Instagram right now — ranked by heat.
+        </p>
+        <p className="text-xs text-[#C4977E] mb-8" style={{ fontFamily: 'var(--font-josefin)' }}>
+          Updated {updatedAt} ✦
+        </p>
+
+        {/* CATEGORY FILTERS */}
+        <div className="flex flex-wrap justify-center gap-3">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2 rounded-full text-xs tracking-widest uppercase transition-all duration-200 ${
+                activeCategory === cat
+                  ? 'bg-[#F4845F] text-white'
+                  : 'bg-white border border-[#FFD4BC] text-[#8B5E52] hover:border-[#F4845F] hover:text-[#F4845F]'
+              }`}
+              style={{ fontFamily: 'var(--font-josefin)' }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* SHOP THE MOMENT */}
       <div className="max-w-4xl mx-auto px-4 mb-10">
