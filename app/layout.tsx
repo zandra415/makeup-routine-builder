@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, Josefin_Sans } from "next/font/google";
 import "./globals.css";
+import LumiChat from '@/components/LumiChat'
 
 const syne = Syne({
   variable: "--font-syne",
@@ -29,7 +30,7 @@ export default function RootLayout({
       lang="en"
       className={`${syne.variable} ${josefinSans.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">{children}<LumiChat /></body>
     </html>
   );
 }
