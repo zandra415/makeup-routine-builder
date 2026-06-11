@@ -1,86 +1,102 @@
-'use client'
+﻿'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 const NAV_LINKS = [
-  { name: 'Home',      href: '/' },
-  { name: 'Glam Lab', href: '/glam-lab' },
-  { name: 'Trending',  href: '/trending' },
-  { name: 'Community', href: '/community' },
-  { name: 'Account',   href: '/account' },
-]
+  { name: 'Home',        href: '/' },
+  { name: 'Lumi Studio', href: '/lumi-studio' },
+  { name: 'Trending',    href: '/trending' },
+  { name: 'Community',   href: '/#community' },
+];
+
+const LOGO_STYLE: React.CSSProperties = {
+  fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: '22px',
+  background: 'linear-gradient(135deg, #E8714A 0%, #F5A623 100%)',
+  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text', textDecoration: 'none',
+};
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const isHome = pathname === '/'
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    if (!isHome) return
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [isHome])
-
-  const solid = !isHome || scrolled
-  const activeTab = NAV_LINKS.find(l => l.href === pathname)?.name
+  const pathname  = usePathname();
+  const isHome    = pathname === '/';
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className={`${isHome ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-50 px-8 py-4 transition-all duration-300 ${
-      solid
-        ? 'bg-[#FFFAF5]/90 backdrop-blur-sm border-b border-[#FFD4BC]/40'
-        : 'bg-transparent'
-    }`}>
-      <div className="relative flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-xs font-medium whitespace-nowrap pb-0.5 tracking-widest uppercase transition-all ${
-                  activeTab === link.name
-                    ? solid ? 'text-[#F4845F] border-b border-[#F4845F]' : 'text-white border-b border-white'
-                    : solid ? 'text-[#8B5E52] hover:text-[#F4845F]' : 'text-white/80 hover:text-white'
-                }`}
-                style={{ fontFamily: 'var(--font-josefin)' }}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-          <button
-            className={`md:hidden text-2xl leading-none ${solid ? 'text-[#F4845F]' : 'text-white'}`}
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label="Menu"
-          >
-            ☰
-          </button>
+    <nav style={{
+      position: isHome ? 'fixed' : 'sticky',
+      top: 0, left: 0, right: 0, zIndex: 100,
+      background: '#FFFFFF',
+      borderBottom: '1px solid rgba(232, 113, 74, 0.12)',
+    }}>
+
+      {/* ── Desktop ── */}
+      <div className="hidden md:grid" style={{
+        gridTemplateColumns: '1fr auto 1fr',
+        alignItems: 'center', padding: '0 40px', height: '64px',
+      }}>
+        {/* Left: logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <Link href="/" style={LOGO_STYLE}>ZanZan</Link>
+          <span aria-hidden="true" style={{ color: '#F5A623', fontSize: '13px', userSelect: 'none' }}>✦</span>
         </div>
-        <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none">
-          <img src="/zanzan-logo.svg" alt="ZanZan" className="h-16 w-auto" />
+
+        {/* Center: links */}
+        <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+          {NAV_LINKS.map(link => {
+            const active = pathname === link.href;
+            return (
+              <Link key={link.name} href={link.href} style={{
+                fontFamily: 'var(--font-space-grotesk)', fontSize: '13px', fontWeight: 500,
+                letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none',
+                color: active ? '#2D1F1A' : 'rgba(45,31,26,0.7)',
+                borderBottom: active ? '1px solid #E8714A' : '1px solid transparent',
+                paddingBottom: '2px', transition: 'color 0.2s',
+              }}>{link.name}</Link>
+            );
+          })}
+        </div>
+
+        {/* Right: CTA pill */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Link href="/account" style={{
+            fontFamily: 'var(--font-space-grotesk)', fontSize: '13px', fontWeight: 600,
+            textDecoration: 'none', color: 'white',
+            background: '#E8714A',
+            borderRadius: '999px', padding: '10px 22px',
+            display: 'inline-block', transition: 'background 0.2s ease',
+          }}>My Account</Link>
         </div>
       </div>
-      {menuOpen && (
-        <div className={`md:hidden mt-3 pb-4 border-t flex flex-col gap-4 pt-4 ${solid ? 'border-[#FFD4BC]' : 'border-white/20'}`}>
-          {NAV_LINKS.map(link => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`text-sm font-medium text-left tracking-widest uppercase transition-all ${
-                solid ? activeTab === link.name ? 'text-[#F4845F]' : 'text-[#8B5E52]' : 'text-white/90'
-              }`}
-              style={{ fontFamily: 'var(--font-josefin)' }}
-            >
-              {link.name}
-            </Link>
+
+      {/* ── Mobile ── */}
+      <div className="flex md:hidden" style={{
+        alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 20px', height: '56px',
+      }}>
+        <Link href="/" style={LOGO_STYLE}>ZanZan</Link>
+        <button onClick={() => setOpen(o => !o)} aria-label="Toggle menu" style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          color: '#2D1F1A', fontSize: '22px', lineHeight: 1,
+        }}>☰</button>
+      </div>
+
+      {open && (
+        <div style={{
+          borderTop: '1px solid rgba(232, 113, 74, 0.12)',
+          padding: '16px 20px 24px', background: '#FFFFFF',
+          display: 'flex', flexDirection: 'column', gap: '16px',
+        }}>
+          {[...NAV_LINKS, { name: 'My Account', href: '/account' }].map(link => (
+            <Link key={link.name} href={link.href} onClick={() => setOpen(false)} style={{
+              fontFamily: 'var(--font-space-grotesk)', fontSize: '14px', fontWeight: 500,
+              letterSpacing: '0.04em', textTransform: 'uppercase', textDecoration: 'none',
+              color: pathname === link.href ? '#E8714A' : 'rgba(45,31,26,0.7)',
+            }}>{link.name}</Link>
           ))}
         </div>
       )}
     </nav>
-  )
+  );
 }

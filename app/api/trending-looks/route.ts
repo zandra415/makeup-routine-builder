@@ -22,7 +22,6 @@ const LOOKS = [
 async function fetchGoogleTrends(keyword: string): Promise<number> {
   try {
     const encodedKeyword = encodeURIComponent(keyword)
-    const url = `https://trends.google.com/trends/api/dailytrends?hl=en-US&tz=-360&geo=US&ns=15`
     const res = await fetch(
       `https://pytrends-api.vercel.app/api/interest?keyword=${encodedKeyword}&timeframe=now+7-d`,
       { next: { revalidate: 3600 } }

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -64,7 +64,7 @@ export default function AccountPage() {
 
       {/* HEADER */}
       <div className="pt-16 pb-10 text-center px-4">
-        <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Your Space ✦</p>
+        <p className="text-xs font-medium tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)', color: '#C8960A' }}>✦ Your Space ✦</p>
         <h1 className="text-5xl text-[#1C0A00] mb-3" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
           My Account
         </h1>
@@ -94,9 +94,9 @@ export default function AccountPage() {
           <div className="text-center py-20 rounded-3xl bg-white border border-[#FFD4BC]">
             <p className="text-4xl mb-4">🪄</p>
             <p className="text-[#1C0A00] text-lg mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>No routines yet</p>
-            <p className="text-[#8B5E52] text-sm mb-6">Head to the Glam Lab and build your first look</p>
-            <Link href="/glam-lab" className="px-8 py-3 rounded-full bg-[#F4845F] text-white text-sm hover:bg-[#FFAA80] transition-all" style={{ fontFamily: 'var(--font-josefin)' }}>
-              Go to Glam Lab →
+            <p className="text-[#8B5E52] text-sm mb-6">Head to the Lumi Studio and build your first look</p>
+            <Link href="/lumi-studio" className="px-8 py-3 rounded-full bg-[#F4845F] text-white text-sm hover:bg-[#FFAA80] transition-all" style={{ fontFamily: 'var(--font-josefin)' }}>
+              Go to Lumi Studio →
             </Link>
           </div>
         ) : (

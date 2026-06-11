@@ -77,6 +77,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const routineSavedRef = useRef(false)
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -93,8 +94,20 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!validTypes.includes(file.type)) {
+      setError('Please upload a JPG, PNG, or WebP image.')
+      return
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Image must be under 10MB.')
+      return
+    }
+    setError('')
     setImageFile(file)
+    setSelfieFile(file)
     setImagePreview(URL.createObjectURL(file))
+    setSelfiePreview(URL.createObjectURL(file))
   }
 
   const updateProduct = (index: number, value: string) => {
@@ -185,8 +198,9 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
     try {
       let body: Record<string, unknown>
 
-      if (inputMode === 'upload' && selfieFile) {
-        const imageBase64 = await fileToBase64(selfieFile)
+      const photoFile = selfieFile || imageFile
+      if (inputMode === 'upload' && photoFile) {
+        const imageBase64 = await fileToBase64(photoFile)
         body = { imageBase64 }
       } else {
         body = { manualTraits }
@@ -240,18 +254,13 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
           data: { source: 'routine_save' }
         }
       })
-      if (userId) {
+      if (userId && !routineSavedRef.current) {
         await fetch('/api/save-routine', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId,
-            routine,
-            products,
-            desiredLook,
-            faceAnalysis
-          })
+          body: JSON.stringify({ userId, routine, products, desiredLook, faceAnalysis })
         })
+        routineSavedRef.current = true
       }
       setEmailSaved(true)
     } catch (err) {
@@ -292,18 +301,13 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
       setRoutine(data.routine)
       setCurrentStep(4)
 
-      if (userId) {
+      if (userId && !routineSavedRef.current) {
         await fetch('/api/save-routine', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId,
-            faceAnalysis,
-            products: filledProducts,
-            desiredLook,
-            routine: data.routine
-          })
+          body: JSON.stringify({ userId, faceAnalysis, products: filledProducts, desiredLook, routine: data.routine })
         })
+        routineSavedRef.current = true
       }
     } catch (e) {
       setError('Could not generate routine. Please try again.')
@@ -325,32 +329,8 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF5F0] font-sans">
-<main className="max-w-2xl mx-auto px-4 py-10">
-
-        {/* ---- Progress Steps ---- */}
-        <div className="flex items-center justify-between mb-10">
-          {STEPS.map((step, i) => (
-            <div key={step.id} className="flex items-center flex-1">
-              <div className="flex flex-col items-center">
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all
-                  ${currentStep === step.id ? 'bg-[#F4845F] text-white shadow-md' :
-                    currentStep > step.id ? 'bg-[#FFD4BC] text-[#8B5E52]' :
-                    'bg-[#FFF0E8] text-[#8B5E52]'}`}>
-                  {currentStep > step.id ? '✓' : step.id}
-                </div>
-                <span className={`text-xs mt-1 font-medium
-                  ${currentStep === step.id ? 'text-[#F4845F]' : 'text-[#8B5E52]/60'}`}>
-                  {step.label}
-                </span>
-              </div>
-              {i < STEPS.length - 1 && (
-                <div className={`flex-1 h-0.5 mx-2 mb-4 rounded transition-all
-                  ${currentStep > step.id ? 'bg-[#FFAA80]' : 'bg-[#FFD4BC]'}`} />
-              )}
-            </div>
-          ))}
-        </div>
+    <div className="font-sans">
+<main className="max-w-2xl mx-auto px-4 pt-0 pb-10">
 
         {/* ---- Error Banner ---- */}
         {error && (
@@ -372,120 +352,80 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
             STEP 1 — FACE INPUT
         ====================================================== */}
         {currentStep === 1 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-[#FFD4BC] p-8">
-            <h2 className="text-xl font-semibold text-[#1C0A00] mb-1">Tell us about your face</h2>
-            <p className="text-sm text-[#8B5E52] mb-6">Upload a selfie for AI analysis, or fill in your features manually.</p>
+          <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.92)', boxShadow: '0 12px 30px rgba(120,60,120,0.18)' }}>
+            <h2 className="text-xl font-semibold text-[#1C0A00] mb-1">Let's start with your features</h2>
+            <p className="text-sm text-[#8B5E52] mb-6">Upload a selfie for AI analysis, or enter your features manually.</p>
 
-            <div className="flex bg-[#FFF0E8] rounded-xl p-1 mb-6 gap-1">
+            <div className="flex gap-2 mb-6">
               {(['upload', 'avatar'] as const).map(mode => (
-                <button key={mode}
-                  onClick={() => setInputMode(mode)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all capitalize
-                    ${inputMode === mode ? 'bg-white shadow-sm text-[#F4845F]' : 'text-[#8B5E52] hover:text-[#1C0A00]'}`}>
-                  {mode === 'upload' ? '📷 Upload Selfie' : '🎨 Build My Avatar'}
+                <button key={mode} onClick={() => setInputMode(mode)}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    inputMode === mode ? 'bg-[#F4845F] text-white' : 'border border-[#FFD4BC] text-[#8B5E52] hover:bg-[#FFF0E8]'
+                  }`}>
+                  {mode === 'upload' ? '📸 Upload Photo' : '✦ Enter Manually'}
                 </button>
               ))}
             </div>
 
-            {inputMode === 'upload' ? (
+            {inputMode === 'upload' && (
               <>
-                {!showCamera ? (
-                  <div className="space-y-4">
-                    {selfiePreview ? (
-                      <div className="relative">
-                        <img src={selfiePreview} alt="Your selfie" className="w-full max-w-sm mx-auto rounded-2xl object-cover aspect-square" />
-                        <button
-                          onClick={() => { setSelfiePreview(null); setSelfieFile(null) }}
-                          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 text-[#1C0A00] text-sm flex items-center justify-center hover:bg-white transition-all"
-                        >✕</button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <div className="flex flex-col items-center">
-                          <button
-                            onClick={startCamera}
-                            className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFAA80] bg-[#FFF5EE] hover:bg-[#FFE8D6] transition-all cursor-pointer text-[#F4845F] text-sm font-medium"
-                          >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                              <circle cx="12" cy="13" r="4"/>
-                            </svg>
-                            Take a Selfie
-                          </button>
-                          <p className="text-xs text-[#C4977E] text-center mt-1">Best on mobile 📱</p>
-                        </div>
-                        <label className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border-2 border-dashed border-[#FFD4BC] bg-[#FFFAF5] hover:bg-[#FFF0E8] transition-all cursor-pointer text-[#8B5E52] text-sm font-medium">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="17 8 12 3 7 8"/>
-                            <line x1="12" y1="3" x2="12" y2="15"/>
-                          </svg>
-                          Upload Photo
-                          <input type="file" accept="image/*" className="hidden" onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (!file) return
-                            setSelfieFile(file)
-                            const reader = new FileReader()
-                            reader.onload = (ev) => setSelfiePreview(ev.target?.result as string)
-                            reader.readAsDataURL(file)
-                          }} />
-                        </label>
-                      </div>
-                    )}
+                {!selfiePreview && !showCamera && (
+                  <div className="flex gap-3 mb-4">
+                    <button onClick={() => fileInputRef.current?.click()}
+                      className="flex-1 py-8 rounded-2xl border-2 border-dashed border-[#FFD4BC] text-[#8B5E52] text-sm hover:bg-[#FFF0E8] hover:border-[#F4845F] transition-all">
+                      📁 Upload photo
+                    </button>
+                    <button onClick={startCamera}
+                      className="flex-1 py-8 rounded-2xl border-2 border-dashed border-[#FFD4BC] text-[#8B5E52] text-sm hover:bg-[#FFF0E8] hover:border-[#F4845F] transition-all">
+                      📷 Take selfie
+                    </button>
                   </div>
-                ) : (
-                  <div className="relative max-w-sm mx-auto">
-                    <video
-                      ref={videoRef}
-                      className="w-full rounded-2xl"
-                      style={{ transform: 'scaleX(-1)' }}
-                      autoPlay
-                      playsInline
-                      muted
-                    />
+                )}
+                <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImageChange} />
+                {showCamera && (
+                  <div className="mb-4">
+                    <video ref={videoRef} autoPlay playsInline className="w-full rounded-2xl" style={{ transform: 'scaleX(-1)' }} />
                     <canvas ref={canvasRef} className="hidden" />
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-                      <button
-                        onClick={stopCamera}
-                        className="px-5 py-2 rounded-full bg-white/80 text-[#1C0A00] text-sm font-medium hover:bg-white transition-all"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={capturePhoto}
-                        className="w-14 h-14 rounded-full bg-[#F4845F] border-4 border-white text-white flex items-center justify-center hover:bg-[#FFAA80] transition-all shadow-lg"
-                      >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                          <circle cx="12" cy="13" r="4"/>
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="absolute top-4 left-0 right-0 flex justify-center">
-                      <div className="px-4 py-2 rounded-full bg-black/30 text-white text-xs">
-                        Position your face in the center ✦
-                      </div>
+                    <div className="flex gap-3 mt-3">
+                      <button onClick={stopCamera} className="flex-1 py-2.5 rounded-xl border border-[#FFD4BC] text-[#8B5E52] text-sm hover:bg-[#FFF0E8] transition-all">Cancel</button>
+                      <button onClick={capturePhoto} className="flex-1 py-2.5 rounded-xl bg-[#F4845F] text-white text-sm font-medium hover:bg-[#FFAA80] transition-all">Capture ✦</button>
                     </div>
                   </div>
                 )}
-                <button
-                  onClick={handleNextFromStep1}
-                  disabled={loading || !selfieFile}
-                  className="mt-8 w-full bg-[#F4845F] text-white py-3 rounded-xl font-semibold hover:bg-[#FFAA80] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
-                  {loading ? 'Analyzing your face…' : 'Continue →'}
-                </button>
+                {selfiePreview && (
+                  <div className="mb-4 text-center">
+                    <img src={selfiePreview} alt="Your photo" className="w-32 h-32 object-cover rounded-2xl mx-auto mb-3" />
+                    <button onClick={() => { setSelfiePreview(null); setSelfieFile(null); setImageFile(null); setImagePreview('') }}
+                      className="text-sm text-[#8B5E52] hover:text-[#F4845F] transition-colors">✕ Remove</button>
+                  </div>
+                )}
               </>
-            ) : (
-              <AvatarBuilder
-                onChange={(data) => setAvatarData(data)}
-                onContinue={() => {
-                  if (avatarData) {
-                    setFaceAnalysis(avatarData as FaceAnalysis)
-                    setCurrentStep(2)
-                  }
-                }}
-              />
             )}
+
+            {inputMode === 'avatar' && (
+              <div className="space-y-3 mb-2">
+                {([
+                  { key: 'faceShape',    placeholder: 'Face shape (e.g. oval, round, square)' },
+                  { key: 'skinTone',     placeholder: 'Skin tone (e.g. fair, medium, deep)' },
+                  { key: 'undertone',    placeholder: 'Undertone (e.g. warm, cool, neutral)' },
+                  { key: 'eyeShape',     placeholder: 'Eye shape (e.g. almond, round, hooded)' },
+                  { key: 'eyeColor',     placeholder: 'Eye color (e.g. brown, hazel, blue)' },
+                  { key: 'lipShape',     placeholder: 'Lip shape (e.g. full, thin, heart-shaped)' },
+                  { key: 'skinConcerns', placeholder: 'Skin concerns (e.g. acne, dryness, dark circles)' },
+                ] as { key: keyof FaceAnalysis; placeholder: string }[]).map(field => (
+                  <input key={field.key} type="text" placeholder={field.placeholder}
+                    value={manualTraits[field.key] || ''}
+                    onChange={e => setManualTraits({ ...manualTraits, [field.key]: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#FFD4BC] bg-white text-[#1C0A00] text-sm focus:outline-none focus:ring-2 focus:ring-[#F4845F] placeholder:text-[#8B5E52]/40"
+                  />
+                ))}
+              </div>
+            )}
+
+            <button onClick={handleNextFromStep1} disabled={loading}
+              className="w-full mt-6 bg-gradient-to-r from-[#FFE600] via-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-40 transition-all">
+              {loading ? 'Analyzing your features…' : 'Continue →'}
+            </button>
           </div>
         )}
 
@@ -493,7 +433,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
             STEP 2 — PRODUCTS
         ====================================================== */}
         {currentStep === 2 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-[#FFD4BC] p-8">
+          <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.92)', boxShadow: '0 12px 30px rgba(120,60,120,0.18)' }}>
             <h2 className="text-xl font-semibold text-[#1C0A00] mb-1">What products do you own?</h2>
             <p className="text-sm text-[#8B5E52] mb-6">
               Add the makeup products in your collection. Be specific — include brand and shade if you know them.
@@ -532,7 +472,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                 ← Back
               </button>
               <button onClick={handleNextFromStep2}
-                className="flex-1 bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-all">
+                className="flex-1 bg-gradient-to-r from-[#FFE600] via-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-all">
                 Continue →
               </button>
             </div>
@@ -543,7 +483,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
             STEP 3 — LOOK SELECTOR
         ====================================================== */}
         {currentStep === 3 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-[#FFD4BC] p-8">
+          <div className="rounded-2xl p-8" style={{ background: 'rgba(255,255,255,0.92)', boxShadow: '0 12px 30px rgba(120,60,120,0.18)' }}>
             <h2 className="text-xl font-semibold text-[#1C0A00] mb-1">Choose your desired look</h2>
             <p className="text-sm text-[#8B5E52] mb-6">Select the style you want to create today.</p>
 
@@ -570,7 +510,7 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
               <button
                 onClick={handleNextFromStep3}
                 disabled={loading || !desiredLook}
-                className="flex-1 bg-gradient-to-r from-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-40 transition-all">
+                className="flex-1 bg-gradient-to-r from-[#FFE600] via-[#F4845F] to-[#FFAA80] text-white py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-40 transition-all">
                 {loading ? 'Generating your routine…' : '✦ Generate My Routine'}
               </button>
             </div>
@@ -660,37 +600,6 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
               </div>
             )}
 
-            <div className="mt-8 p-6 rounded-3xl bg-[#FFF0E8] border border-[#FFD4BC] text-center">
-              <p className="text-xs tracking-widest uppercase text-[#F4845F] mb-2" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Save Your Look ✦</p>
-              <h3 className="text-xl text-[#1C0A00] mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>Love this routine?</h3>
-              <p className="text-sm text-[#8B5E52] mb-6 leading-relaxed">Drop your email and we'll save your routine, send it to you, and create your free account. No password needed ever.</p>
-              {!emailSaved ? (
-                <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={saveEmail}
-                    onChange={(e) => setSaveEmail(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-full border border-[#FFD4BC] bg-white text-sm text-[#1C0A00] outline-none focus:border-[#F4845F] focus:ring-2 focus:ring-[#FFAA80]/30 placeholder-[#C4977E]"
-                  />
-                  <button
-                    onClick={handleEmailSave}
-                    disabled={savingEmail}
-                    className="px-6 py-3 rounded-full bg-[#F4845F] text-white text-sm font-medium hover:bg-[#FFAA80] transition-all duration-200 disabled:opacity-50"
-                    style={{ fontFamily: 'var(--font-josefin)' }}
-                  >
-                    {savingEmail ? 'Saving...' : 'Save My Look →'}
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <p className="text-2xl mb-2">✨</p>
-                  <p className="text-[#F4845F] font-medium text-sm">Routine saved! Check your email.</p>
-                  <p className="text-[#8B5E52] text-xs mt-1">Your free ZanZan account is ready.</p>
-                </div>
-              )}
-            </div>
-
             <button
               onClick={() => {
                 setCurrentStep(1)
@@ -700,6 +609,9 @@ export default function MakeupWizard({ userId }: { userId?: string }) {
                 setDesiredLook('')
                 setImagePreview('')
                 setImageFile(null)
+                setSelfieFile(null)
+                setSelfiePreview(null)
+                routineSavedRef.current = false
               }}
               className="w-full py-3 rounded-xl border-2 border-[#FFD4BC] text-[#F4845F] font-semibold hover:bg-[#FFF0E8] transition-all">
               ← Create Another Routine

@@ -1,121 +1,61 @@
-'use client'
-
-import { useState } from 'react'
-
-export default function ThreeSteps() {
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
-
+﻿export default function ThreeSteps() {
   return (
-    <section id="how-it-works" className="bg-[#FFFAF5] py-20 px-4">
+    <section id="how-it-works" className="py-20 px-4" style={{ background: '#0A1A0F' }}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ The Process</p>
-          <h2 className="text-6xl font-bold text-[#1C0A00] mb-4" style={{ fontFamily: 'var(--font-syne)', fontWeight: '800' }}>Three Steps to Your Look</h2>
-          <p className="text-[#8B5E52] text-sm max-w-lg mx-auto leading-relaxed">It is simple. Upload your face. Add your products. Get your personalized routine in seconds.</p>
+          <p className="text-xs font-medium tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)', color: '#C8960A' }}>✦ The Process</p>
+          <h2 className="text-6xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-syne)', fontWeight: '800' }}>Your most effortless look is three steps away.</h2>
+          <p className="text-white/70 text-sm max-w-xl mx-auto leading-relaxed text-left">No more scrolling through hours of YouTube tutorials or TikTok videos trying to find the right shade or technique for your face. ZanZan builds your personalized makeup routine in minutes — all in one place.</p>
         </div>
-        <div className="grid grid-cols-3 gap-4 items-start">
 
-          <div
-            className="rounded-2xl shadow-sm relative overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2"
-            style={{ minHeight: '420px', background: hoveredStep === 0 ? '#C7522A' : '#FFB899', boxShadow: hoveredStep === 0 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
-            onMouseEnter={() => setHoveredStep(0)}
-            onMouseLeave={() => setHoveredStep(null)}
-          >
-            <div className="h-3 rounded-t-2xl bg-[#FFB899]" />
-            <div className="p-8 relative overflow-hidden">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none transition-colors duration-500" style={{ fontFamily: 'var(--font-syne)', color: 'rgba(255,255,255,0.1)' }}>01</span>
-              <div className="relative z-10 h-full flex flex-col">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><circle cx="20" cy="20" r="18" stroke="white" strokeWidth="1.5"/><line x1="20" y1="12" x2="20" y2="28" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><line x1="12" y1="20" x2="28" y2="20" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                <h3 className="text-2xl mb-4 text-white" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300' }}>Upload Your Face</h3>
-                {hoveredStep === 0 ? (
-                  <div className="space-y-3 flex-1">
-                    <p className="text-sm text-white/90 leading-relaxed">Here is how to get the best results:</p>
-                    <ul className="space-y-2">
-                      {['Face the camera straight on in good lighting', 'Remove glasses and pull hair back', 'Use a recent clear photo, no filters', 'Natural daylight works best'].map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-white/80"><span className="text-white mt-0.5">✦</span>{tip}</li>
-                      ))}
-                    </ul>
-                    <a href="/glam-lab" className="inline-block mt-4 px-6 py-2 rounded-full bg-white text-[#F4845F] text-xs tracking-widest uppercase hover:bg-[#FFF0E8] transition-all" style={{ fontFamily: 'var(--font-josefin)' }}>Start Here →</a>
-                  </div>
-                ) : (
-                  <div className="flex-1">
-                    <p className="text-sm text-white/80 leading-relaxed mb-6">Snap a selfie or build your avatar. We read your face shape, skin tone, eye shape, and more.</p>
-                    <div className="rounded-2xl border-2 border-dashed border-white/40 bg-white/10 p-5 text-center"><p className="text-xs text-white/80">drop your selfie or tap to upload ✨</p></div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 py-16">
+          <div className="relative flex items-start justify-between">
 
-          <div
-            className="rounded-2xl shadow-sm relative overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2"
-            style={{ minHeight: '420px', background: hoveredStep === 1 ? '#C7522A' : '#F4845F', boxShadow: hoveredStep === 1 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
-            onMouseEnter={() => setHoveredStep(1)}
-            onMouseLeave={() => setHoveredStep(null)}
-          >
-            <div className="h-3 rounded-t-2xl bg-[#F4845F]" />
-            <div className="p-8 relative overflow-hidden">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none transition-colors duration-500" style={{ fontFamily: 'var(--font-syne)', color: 'rgba(255,255,255,0.1)' }}>02</span>
-              <div className="relative z-10 h-full flex flex-col">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><rect x="8" y="8" width="24" height="28" rx="3" stroke="white" strokeWidth="1.5"/><line x1="14" y1="16" x2="26" y2="16" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><line x1="14" y1="22" x2="22" y2="22" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                <h3 className="text-2xl mb-4 text-white" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300' }}>Add Your Products</h3>
-                {hoveredStep === 1 ? (
-                  <div className="space-y-3 flex-1">
-                    <p className="text-sm text-white/90 leading-relaxed">Tips for adding your products:</p>
-                    <ul className="space-y-2">
-                      {['Include brand and product name for best results', 'Add as many or as few as you have', 'Any brand works, drugstore to luxury', 'Include skincare products too'].map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-white/80"><span className="text-white mt-0.5">✦</span>{tip}</li>
-                      ))}
-                    </ul>
-                    <a href="/glam-lab" className="inline-block mt-4 px-6 py-2 rounded-full bg-white text-[#F4845F] text-xs tracking-widest uppercase hover:bg-[#FFF0E8] transition-all" style={{ fontFamily: 'var(--font-josefin)' }}>Add Products →</a>
-                  </div>
-                ) : (
-                  <div className="flex-1">
-                    <p className="text-sm text-white/80 leading-relaxed mb-6">Tell us what is in your makeup bag. Any brand, any shade. We work with what you already own.</p>
-                    <input type="text" placeholder="e.g. Rare Beauty, NARS, e.l.f." className="w-full px-4 py-3 text-sm rounded-full border border-white/40 bg-white/20 text-white outline-none focus:border-white placeholder-white/60" />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+            <div className="absolute top-6 left-[10%] right-[10%] h-px z-0" style={{ background: 'rgba(244,132,95,0.4)' }} />
 
-          <div
-            className="rounded-2xl shadow-sm relative overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-2"
-            style={{ minHeight: '420px', background: hoveredStep === 2 ? '#A03D1A' : '#C7522A', boxShadow: hoveredStep === 2 ? '0 12px 40px rgba(244,132,95,0.2)' : undefined }}
-            onMouseEnter={() => setHoveredStep(2)}
-            onMouseLeave={() => setHoveredStep(null)}
-          >
-            <div className="h-3 rounded-t-2xl bg-[#C7522A]" />
-            <div className="p-8 relative overflow-hidden">
-              <span className="absolute top-4 right-6 text-[8rem] font-bold leading-none select-none pointer-events-none text-white/10" style={{ fontFamily: 'var(--font-syne)' }}>03</span>
-              <div className="relative z-10 h-full flex flex-col">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="mb-6"><path d="M20 8 L24 16 L34 16 L26 22 L30 32 L20 26 L10 32 L14 22 L6 16 L16 16 Z" stroke="white" strokeWidth="1.5" fill="none" strokeLinejoin="round"/></svg>
-                <h3 className="text-2xl text-white mb-4" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '300' }}>Get Your Routine</h3>
-                {hoveredStep === 2 ? (
-                  <div className="space-y-3 flex-1">
-                    <p className="text-sm text-white/90 leading-relaxed">What your routine includes:</p>
-                    <ul className="space-y-2">
-                      {['Step by step application instructions', 'Techniques tailored to your face shape', 'Product placement specific to your features', 'Pro tips from AI trained on expert techniques'].map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-white/80"><span className="text-white mt-0.5">✦</span>{tip}</li>
-                      ))}
-                    </ul>
-                    <a href="/glam-lab" className="inline-block mt-4 px-6 py-2 rounded-full bg-white text-[#F4845F] text-xs tracking-widest uppercase hover:bg-[#FFF0E8] transition-all" style={{ fontFamily: 'var(--font-josefin)' }}>Get My Routine →</a>
-                  </div>
-                ) : (
-                  <div className="flex-1">
-                    <p className="text-sm text-white/80 leading-relaxed mb-6">Pick a look and receive a personalized step by step routine built just for your face.</p>
-                    <div className="flex flex-wrap gap-2">
-                      {['everyday slay', 'date night', 'no-makeup makeup', 'festival ready'].map((look) => (
-                        <span key={look} className="px-4 py-2 text-xs rounded-full border border-white bg-transparent text-white hover:bg-white hover:text-[#F4845F] cursor-pointer transition-all duration-200">{look}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            <div className="flex-1 text-center relative z-10">
+              <div className="mx-auto mb-2 w-8 h-8 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: '#F4845F', boxShadow: '0 0 20px rgba(244,132,95,0.6)', border: '2px solid #FFAA80' }}>
+                <span className="text-white font-bold text-sm" style={{ fontFamily: 'var(--font-syne)' }}>01</span>
+              </div>
+              <h3 className="text-lg text-white mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Take a Selfie</h3>
+              <p className="text-xs leading-relaxed mx-auto max-w-[140px]" style={{ color: 'rgba(255,255,255,0.75)' }}>Snap a selfie and Lumi reads your face instantly. No camera? No problem — fill in your features manually.</p>
             </div>
+
+            <div className="flex-1 text-center relative z-10">
+              <div className="mx-auto mb-2 w-8 h-8 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M21 9V5a2 2 0 0 0-2-2h-4"/><path d="M3 15v4a2 2 0 0 0 2 2h4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><line x1="7" y1="12" x2="7.01" y2="12"/><line x1="12" y1="12" x2="12.01" y2="12"/><line x1="17" y1="12" x2="17.01" y2="12"/></svg>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: '#0F2818', border: '2px solid #F4845F' }}>
+                <span style={{ color: 'white', fontWeight: 'bold', fontSize: '15px', fontFamily: 'var(--font-syne)' }}>02</span>
+              </div>
+              <h3 className="text-lg text-white mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Scan Your Products</h3>
+              <p className="text-xs leading-relaxed mx-auto max-w-[140px]" style={{ color: 'rgba(255,255,255,0.75)' }}>Scan your makeup products and the brand, shade and formula are instantly identified. No typing needed. Your full inventory uploaded in seconds.</p>
+            </div>
+
+            <div className="flex-1 text-center relative z-10">
+              <div className="mx-auto mb-2 w-8 h-8 flex items-center justify-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F4845F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: '#0F2818', border: '2px solid rgba(244,132,95,0.6)' }}>
+                <span style={{ color: '#FFAA80', fontWeight: 'bold', fontSize: '15px', fontFamily: 'var(--font-syne)' }}>03</span>
+              </div>
+              <h3 className="text-lg text-white mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: '400' }}>Get Your Routine</h3>
+              <p className="text-xs leading-relaxed mx-auto max-w-[140px]" style={{ color: 'rgba(255,255,255,0.75)' }}>Receive a full step by step routine built for YOU! The right products, the right technique, the right shades. Every time.</p>
+            </div>
+
           </div>
 
         </div>
+
+        <div className="text-center mt-4 pb-4">
+          <a href="/lumi-studio" className="inline-block px-10 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300 hover:opacity-80 hover:-translate-y-1" style={{ background: '#F4845F', color: 'white', fontFamily: 'var(--font-josefin)' }}>
+            Build My Routine →
+          </a>
+        </div>
+
       </div>
     </section>
   )

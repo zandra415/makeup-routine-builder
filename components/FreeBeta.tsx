@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import Link from 'next/link'
 
 export default function FreeBeta() {
   useEffect(() => {
@@ -14,17 +13,24 @@ export default function FreeBeta() {
   }, [])
 
   return (
-    <section className="bg-[#FFFAF5] py-24 px-4">
-      <div className="fade-up max-w-2xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#1C0A00] mb-4" style={{ fontFamily: 'var(--font-syne, Georgia, serif)' }}>
-          Free during beta — always. ✦
-        </h2>
-        <p className="text-[#8B5E52] text-lg leading-relaxed mb-10">
-          ZanZan is completely free right now. No credit card. No catch. Just your best look.
-        </p>
-        <Link href="/app" className="px-10 py-4 rounded-full bg-[#F4845F] text-white text-sm font-medium tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-300 hover:-translate-y-1">
-          Build My Routine →
-        </Link>
+    <section className="bg-[#FFFAF5] py-12 px-4">
+      <div className="fade-up max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 rounded-3xl" style={{ background: 'rgba(245,230,200,0.05)', border: '0.5px solid rgba(245,230,200,0.15)' }}>
+          <div className="flex gap-8 justify-center">
+            <div className="text-center">
+              <p className="text-4xl font-bold text-[#1C0A00] mb-1" style={{ fontFamily: 'var(--font-syne)' }}>2min</p>
+              <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#8B5E52' }}>to build your routine</p>
+            </div>
+            <div className="text-center">
+              <p className="text-4xl font-bold text-[#1C0A00] mb-1" style={{ fontFamily: 'var(--font-syne)' }}>100%</p>
+              <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#8B5E52' }}>personalized</p>
+            </div>
+            <div className="text-center">
+              <p className="text-4xl font-bold text-[#1C0A00] mb-1" style={{ fontFamily: 'var(--font-syne)' }}>Free</p>
+              <p className="text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-josefin)', color: '#8B5E52' }}>during beta</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

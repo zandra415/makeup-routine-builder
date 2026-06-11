@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { faceAnalysis, products, desiredLook } = body
-    const identifier = body.userId || req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous'
+    const userId = body.userId || null
 
-    const { allowed, resetDate } = await checkRateLimit(identifier)
+    const { allowed, resetDate } = await checkRateLimit(userId)
     if (!allowed) {
       return NextResponse.json(
         {
@@ -83,7 +83,12 @@ Return a JSON object with this exact structure:
 
     const rawText = response.choices[0].message.content || '{}'
     const jsonText = rawText.replace(/```json\n?|\n?```/g, '').trim()
-    const routine = JSON.parse(jsonText)
+    let routine
+    try {
+      routine = JSON.parse(jsonText)
+    } catch {
+      return NextResponse.json({ error: 'AI returned an unexpected response format' }, { status: 500 })
+    }
 
     return NextResponse.json({ routine })
 

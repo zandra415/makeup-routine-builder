@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -15,6 +16,7 @@ const SUGGESTED_QUESTIONS = [
 ]
 
 export default function LumiChat() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -65,6 +67,8 @@ export default function LumiChat() {
       setLoading(false)
     }
   }
+
+  if (pathname === '/brands') return null
 
   return (
     <>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -137,7 +137,7 @@ export default function TrendingPage() {
           {/* Countdown + CTA */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
             <Link
-              href={`/glam-lab?look=${encodeURIComponent(LOOK_OF_THE_WEEK.name)}`}
+              href={`/lumi-studio?look=${encodeURIComponent(LOOK_OF_THE_WEEK.name)}`}
               className="px-8 py-3 rounded-full bg-[#F4845F] text-white text-xs tracking-widest uppercase hover:bg-[#FFAA80] transition-all duration-200"
               style={{ fontFamily: 'var(--font-josefin)' }}
             >
@@ -170,7 +170,7 @@ export default function TrendingPage() {
       <div className="pt-16 text-center px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#FFAA80] opacity-10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#F4845F] opacity-10 blur-3xl pointer-events-none" />
-        <p className="text-xs font-medium text-[#F4845F] tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)' }}>✦ Live Rankings ✦</p>
+        <p className="text-xs font-medium tracking-[0.3em] uppercase mb-3" style={{ fontFamily: 'var(--font-josefin)', color: '#C8960A' }}>✦ Live Rankings ✦</p>
         <h1 className="text-6xl text-[#1C0A00] mb-4" style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontStyle: 'italic', fontWeight: '400' }}>
           The Hot List
         </h1>
@@ -380,7 +380,7 @@ export default function TrendingPage() {
 
             {/* CTA */}
             <Link
-              href={`/glam-lab?look=${encodeURIComponent(look.name)}`}
+              href={`/lumi-studio?look=${encodeURIComponent(look.name)}`}
               className={`flex-shrink-0 px-5 py-2 rounded-full text-[10px] tracking-widest uppercase transition-all duration-200 ${
                 look.rank <= 2
                   ? 'bg-white text-[#F4845F] hover:bg-[#FFF0E8]'

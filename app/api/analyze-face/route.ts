@@ -37,7 +37,11 @@ export async function POST(req: NextRequest) {
 
       const rawText = response.choices[0].message.content || '{}'
       const jsonText = rawText.replace(/```json\n?|\n?```/g, '').trim()
-      faceAnalysis = JSON.parse(jsonText)
+      try {
+        faceAnalysis = JSON.parse(jsonText)
+      } catch {
+        return NextResponse.json({ error: 'AI returned an unexpected response format' }, { status: 500 })
+      }
 
     } else if (manualTraits) {
       faceAnalysis = manualTraits
